@@ -1,0 +1,16 @@
+fastapi
+uvicorn[standard]
+imagehash
+Pillow
+faiss-cpu
+numpy
+easyocr
+deepface
+open-clip-torch
+opencv-python
+librosa
+google-generativeai
+geopy
+faker
+python-multipart
+sqlalchemy

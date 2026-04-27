@@ -1,0 +1,10 @@
+venv
+*.jpg
+*.jpeg
+*.webp
+*.png
+*.mp4
+*.db
+*.index
+.DS_Store
+__pycache__/
