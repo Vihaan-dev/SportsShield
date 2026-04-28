@@ -1,110 +1,206 @@
+import json
 import os
-from PIL import Image, ImageDraw, ImageFont, ImageEnhance, ImageFilter
 import random
+from PIL import Image, ImageDraw, ImageFont, ImageEnhance, ImageFilter, ImageOps
 
-SEED_DIR = "../data/seed_images"
-OUT_DIR = "../data/test_dataset"
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+PROJECT_ROOT = os.path.dirname(SCRIPT_DIR)
 
-# Create output subdirectories
-categories = [
-    "originals", 
-    "type1_cropped", 
-    "type1_compressed", 
-    "type2_text_overlay", 
-    "type2_watermarked", 
+SEED_DIR = os.path.join(PROJECT_ROOT, "data", "seed_images")
+OUT_DIR = os.path.join(PROJECT_ROOT, "data", "test_dataset")
+MANIFEST_PATH = os.path.join(OUT_DIR, "manifest.json")
+
+CATEGORIES = [
+    "originals",
+    "type1_cropped",
+    "type1_compressed",
+    "type2_text_overlay",
+    "type2_watermarked",
     "type3_ai_simulated",
     "type4_mixed_crop_text",
-    "type4_mixed_compress_watermark"
+    "type4_mixed_compress_watermark",
 ]
 
-for cat in categories:
-    os.makedirs(os.path.join(OUT_DIR, cat), exist_ok=True)
+
+def ensure_output_dirs():
+    os.makedirs(OUT_DIR, exist_ok=True)
+    for category in CATEGORIES:
+        category_dir = os.path.join(OUT_DIR, category)
+        os.makedirs(category_dir, exist_ok=True)
+        for entry in os.listdir(category_dir):
+            entry_path = os.path.join(category_dir, entry)
+            if os.path.isfile(entry_path):
+                os.remove(entry_path)
+
+
+def load_font(size):
+    font_candidates = [
+        "Arial.ttf",
+        "/Library/Fonts/Arial.ttf",
+        "/System/Library/Fonts/Supplemental/Arial.ttf",
+    ]
+    for font_path in font_candidates:
+        try:
+            return ImageFont.truetype(font_path, size)
+        except IOError:
+            continue
+    return ImageFont.load_default()
+
+
+def save_jpeg(image, path, quality):
+    image.save(path, quality=quality, optimize=True)
+
+
+def apply_random_crop(image, rng):
+    width, height = image.size
+    crop_ratio = rng.uniform(0.03, 0.09)
+    crop_margin_w = max(1, int(width * crop_ratio))
+    crop_margin_h = max(1, int(height * crop_ratio))
+    return image.crop((crop_margin_w, crop_margin_h, width - crop_margin_w, height - crop_margin_h))
+
+
+def add_text_overlay(image, rng, accent_color):
+    width, height = image.size
+    text_image = image.convert("RGBA")
+    overlay = Image.new("RGBA", image.size, (255, 255, 255, 0))
+    draw = ImageDraw.Draw(overlay)
+    font_size = max(20, int(height * rng.uniform(0.045, 0.075)))
+    font = load_font(font_size)
+    text_content = f"@FakeSportsHub_{rng.randint(100, 999)}"
+    x_pos = int(width * rng.uniform(0.04, 0.12))
+    y_pos = int(height * rng.uniform(0.80, 0.90))
+    banner_height = max(font_size + 16, int(height * 0.12))
+    banner_top = max(0, y_pos - 10)
+    banner_bottom = min(height, banner_top + banner_height)
+    draw.rectangle((0, banner_top, width, banner_bottom), fill=(12, 12, 12, 88))
+    draw.text((x_pos, y_pos), text_content, fill=accent_color, font=font, stroke_width=2, stroke_fill="black")
+    return Image.alpha_composite(text_image, overlay).convert("RGB")
+
+
+def add_watermark(image, rng):
+    width, height = image.size
+    overlay = Image.new("RGBA", image.size, (255, 255, 255, 0))
+    watermark_text = rng.choice([
+        "UNAUTHORIZED BETTING PROMO",
+        "SAMPLE REPOST",
+        "PROMOTIONAL CONTENT",
+    ])
+    font = load_font(max(24, int(height * rng.uniform(0.08, 0.12))))
+    opacity = rng.randint(110, 165)
+    angle = rng.choice([0, 15, 20])
+
+    for row in range(-1, 3):
+        for col in range(-1, 3):
+            x_pos = int(width * (0.1 + 0.28 * col))
+            y_pos = int(height * (0.18 + 0.24 * row))
+            layer = Image.new("RGBA", image.size, (255, 255, 255, 0))
+            layer_draw = ImageDraw.Draw(layer)
+            layer_draw.text((x_pos, y_pos), watermark_text, fill=(255, 0, 0, opacity), font=font)
+            rotated = layer.rotate(angle, resample=Image.Resampling.BICUBIC)
+            overlay = Image.alpha_composite(overlay, rotated)
+
+    watermarked = image.convert("RGBA")
+    watermarked = Image.alpha_composite(watermarked, overlay)
+    return watermarked.convert("RGB")
+
+
+def simulate_ai_image(image, rng):
+    transformed = image.copy()
+    ops = [
+        lambda im: ImageEnhance.Color(im).enhance(rng.uniform(1.7, 3.0)),
+        lambda im: ImageEnhance.Contrast(im).enhance(rng.uniform(1.2, 1.8)),
+        lambda im: ImageEnhance.Sharpness(im).enhance(rng.uniform(1.4, 2.5)),
+        lambda im: ImageOps.autocontrast(im),
+        lambda im: ImageOps.posterize(im, rng.choice([3, 4])),
+        lambda im: ImageOps.solarize(im, threshold=rng.randint(72, 140)),
+        lambda im: im.filter(ImageFilter.EDGE_ENHANCE_MORE),
+        lambda im: im.filter(ImageFilter.DETAIL),
+        lambda im: im.filter(ImageFilter.GaussianBlur(radius=rng.uniform(0.6, 1.4))),
+    ]
+
+    transformed = ops[0](transformed)
+    transformed = ops[1](transformed)
+    transformed = ops[2](transformed)
+
+    remaining_ops = ops[3:]
+    rng.shuffle(remaining_ops)
+    for op in remaining_ops[: rng.randint(2, 3)]:
+        transformed = op(transformed)
+
+    return transformed
+
 
 def process_images():
+    ensure_output_dirs()
+
     valid_extensions = {".jpg", ".jpeg", ".png", ".webp"}
     images = [f for f in os.listdir(SEED_DIR) if os.path.splitext(f)[1].lower() in valid_extensions]
-    
+
     if not images:
         print(f"No images found in {SEED_DIR}! Please add some starting images there.")
         return
 
-    print(f"Found {len(images)} seed images. Generating variations...")
+    print(f"Found {len(images)} seed images. Generating varied test cases...")
+    manifest = {"seeds": [], "files": []}
 
-    for filename in images:
+    for filename in sorted(images):
         filepath = os.path.join(SEED_DIR, filename)
-        base_name, ext = os.path.splitext(filename)
-        
+        base_name, _ = os.path.splitext(filename)
+        rng = random.Random(f"{base_name}:test-generation")
+
         try:
             with Image.open(filepath) as img:
                 img = img.convert("RGB")
                 width, height = img.size
-                
-                # 0. Save Original
-                img.save(os.path.join(OUT_DIR, "originals", f"{base_name}_original.jpg"), quality=100)
-                
-                # 1. Cropped (Type 1) - Crop 15% off the edges
-                crop_margin_w = int(width * 0.15)
-                crop_margin_h = int(height * 0.15)
-                cropped = img.crop((crop_margin_w, crop_margin_h, width - crop_margin_w, height - crop_margin_h))
-                cropped.save(os.path.join(OUT_DIR, "type1_cropped", f"{base_name}_cropped.jpg"), quality=95)
-                
-                # 2. Compressed (Type 1) - Save with terrible JPEG quality
-                img.save(os.path.join(OUT_DIR, "type1_compressed", f"{base_name}_compressed.jpg"), quality=15)
-                
-                # 3. Text Overlay (Type 2)
-                txt_img = img.copy()
-                draw = ImageDraw.Draw(txt_img)
-                # We try to make the text big enough to be seen
-                font_size = max(20, int(height * 0.05))
-                try:
-                    # Might fail if Arial is not found, fallback to default
-                    font = ImageFont.truetype("Arial.ttf", font_size)
-                except IOError:
-                    font = ImageFont.load_default()
-                    
-                text_content = f"@FakeSportsHub_{random.randint(100, 999)}"
-                draw.text((int(width*0.05), int(height*0.85)), text_content, fill="white", font=font, stroke_width=2, stroke_fill="black")
-                txt_img.save(os.path.join(OUT_DIR, "type2_text_overlay", f"{base_name}_text.jpg"), quality=95)
-                
-                # 4. Watermarked (Type 2) - Large semi-transparent text across the middle
-                watermark = img.copy()
-                overlay = Image.new('RGBA', watermark.size, (255,255,255,0))
-                draw_ov = ImageDraw.Draw(overlay)
-                try:
-                    font_wm = ImageFont.truetype("Arial.ttf", int(height * 0.1))
-                except IOError:
-                    font_wm = ImageFont.load_default()
-                
-                draw_ov.text((int(width*0.2), int(height*0.4)), "UNAUTHORIZED BETTING PROMO", fill=(255, 0, 0, 128), font=font_wm)
-                watermark.paste(overlay, (0,0), overlay)
-                watermark = watermark.convert("RGB")
-                watermark.save(os.path.join(OUT_DIR, "type2_watermarked", f"{base_name}_watermark.jpg"), quality=95)
-                
-                # 5. AI Simulated / Filtered (Type 3) - Heavily process to simulate 'regeneration'
-                ai_sim = img.copy()
-                ai_sim = ImageEnhance.Color(ai_sim).enhance(2.5) 
-                ai_sim = ai_sim.filter(ImageFilter.EDGE_ENHANCE_MORE)
-                ai_sim = ImageEnhance.Contrast(ai_sim).enhance(1.3)
-                ai_sim.save(os.path.join(OUT_DIR, "type3_ai_simulated", f"{base_name}_ai_sim.jpg"), quality=90)
-                
-                # 6. Mixed 1 (Type 4) - Cropped AND Text Overlay
-                mixed_crop = cropped.copy()
-                draw_mixed = ImageDraw.Draw(mixed_crop)
-                mc_width, mc_height = mixed_crop.size
-                font_size_mc = max(20, int(mc_height * 0.05))
-                try:
-                    font_mc = ImageFont.truetype("Arial.ttf", font_size_mc)
-                except IOError:
-                    font_mc = ImageFont.load_default()
-                draw_mixed.text((int(mc_width*0.05), int(mc_height*0.85)), text_content, fill="yellow", font=font_mc, stroke_width=2, stroke_fill="black")
-                mixed_crop.save(os.path.join(OUT_DIR, "type4_mixed_crop_text", f"{base_name}_mixed1.jpg"), quality=95)
-                
-                # 7. Mixed 2 (Type 4) - Watermarked AND Terrible Compression
-                mixed_wm = watermark.copy() # Already has watermark
-                mixed_wm.save(os.path.join(OUT_DIR, "type4_mixed_compress_watermark", f"{base_name}_mixed2.jpg"), quality=10) # 10 is very bad quality
-                
+
+                original_name = f"{base_name}_original.jpg"
+                save_jpeg(img, os.path.join(OUT_DIR, "originals", original_name), quality=100)
+                manifest["seeds"].append({"source": filename, "size": [width, height]})
+                manifest["files"].append({"folder": "originals", "file": original_name, "source": filename, "variant": "original"})
+
+                cropped = apply_random_crop(img, rng)
+                crop_name = f"{base_name}_cropped.jpg"
+                save_jpeg(cropped, os.path.join(OUT_DIR, "type1_cropped", crop_name), quality=rng.choice([88, 92, 96]))
+                manifest["files"].append({"folder": "type1_cropped", "file": crop_name, "source": filename, "variant": "crop"})
+
+                compressed_name = f"{base_name}_compressed.jpg"
+                compressed = img.resize((max(64, int(width * rng.uniform(0.82, 0.95))), max(64, int(height * rng.uniform(0.82, 0.95)))), Image.Resampling.LANCZOS)
+                compressed = compressed.resize((width, height), Image.Resampling.LANCZOS)
+                save_jpeg(compressed, os.path.join(OUT_DIR, "type1_compressed", compressed_name), quality=rng.choice([12, 18, 24, 30]))
+                manifest["files"].append({"folder": "type1_compressed", "file": compressed_name, "source": filename, "variant": "compression"})
+
+                text_name = f"{base_name}_text.jpg"
+                text_overlay = add_text_overlay(img, rng, accent_color=rng.choice(["white", "yellow", "#ffdd55"]))
+                save_jpeg(text_overlay, os.path.join(OUT_DIR, "type2_text_overlay", text_name), quality=rng.choice([90, 94, 97]))
+                manifest["files"].append({"folder": "type2_text_overlay", "file": text_name, "source": filename, "variant": "text"})
+
+                watermark_name = f"{base_name}_watermark.jpg"
+                watermarked = add_watermark(img, rng)
+                save_jpeg(watermarked, os.path.join(OUT_DIR, "type2_watermarked", watermark_name), quality=rng.choice([90, 94, 97]))
+                manifest["files"].append({"folder": "type2_watermarked", "file": watermark_name, "source": filename, "variant": "watermark"})
+
+                ai_name = f"{base_name}_ai_sim.jpg"
+                ai_sim = simulate_ai_image(img, rng)
+                if rng.random() < 0.4:
+                    ai_sim = ImageEnhance.Color(ai_sim).enhance(rng.uniform(0.75, 1.25))
+                save_jpeg(ai_sim, os.path.join(OUT_DIR, "type3_ai_simulated", ai_name), quality=rng.choice([84, 88, 92]))
+                manifest["files"].append({"folder": "type3_ai_simulated", "file": ai_name, "source": filename, "variant": "ai"})
+
+                mixed_crop_name = f"{base_name}_mixed1.jpg"
+                mixed_crop = add_text_overlay(cropped, rng, accent_color=rng.choice(["yellow", "white"]))
+                save_jpeg(mixed_crop, os.path.join(OUT_DIR, "type4_mixed_crop_text", mixed_crop_name), quality=rng.choice([88, 92, 96]))
+                manifest["files"].append({"folder": "type4_mixed_crop_text", "file": mixed_crop_name, "source": filename, "variant": "crop+text"})
+
+                mixed_wm_name = f"{base_name}_mixed2.jpg"
+                mixed_wm = add_watermark(img, rng)
+                save_jpeg(mixed_wm, os.path.join(OUT_DIR, "type4_mixed_compress_watermark", mixed_wm_name), quality=rng.choice([8, 10, 12]))
+                manifest["files"].append({"folder": "type4_mixed_compress_watermark", "file": mixed_wm_name, "source": filename, "variant": "watermark+compression"})
+
         except Exception as e:
             print(f"Failed processing {filename}: {e}")
+
+    with open(MANIFEST_PATH, "w", encoding="utf-8") as manifest_file:
+        json.dump(manifest, manifest_file, indent=2)
 
     print("Done! Check the data/test_dataset directory for your generated test files.")
 

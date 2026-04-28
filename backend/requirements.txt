@@ -14,3 +14,4 @@ geopy
 faker
 python-multipart
 sqlalchemy
+python-dotenv

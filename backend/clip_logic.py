@@ -20,7 +20,9 @@ def get_model():
     if _model is None:
         import torch
         import open_clip
-        _model, _, _preprocess = open_clip.create_model_and_transforms(MODEL_NAME, pretrained=PRETRAINED)
+        # Force CPU for stability on macOS
+        device = "cpu"
+        _model, _, _preprocess = open_clip.create_model_and_transforms(MODEL_NAME, pretrained=PRETRAINED, device=device)
         _model.eval()
     return _model, _preprocess
 
