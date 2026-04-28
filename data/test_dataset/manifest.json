@@ -1,0 +1,1326 @@
+{
+  "seeds": [
+    {
+      "source": "fifa1.jpg",
+      "size": [
+        960,
+        640
+      ]
+    },
+    {
+      "source": "ipl1.jpg",
+      "size": [
+        680,
+        440
+      ]
+    },
+    {
+      "source": "nba1.jpg",
+      "size": [
+        1089,
+        1600
+      ]
+    },
+    {
+      "source": "type1_compressed_1_fifa1_compressed.jpg",
+      "size": [
+        960,
+        640
+      ]
+    },
+    {
+      "source": "type1_compressed_2_ipl1_compressed.jpg",
+      "size": [
+        680,
+        440
+      ]
+    },
+    {
+      "source": "type1_compressed_3_nba1_compressed.jpg",
+      "size": [
+        1089,
+        1600
+      ]
+    },
+    {
+      "source": "type1_cropped_1_fifa1_cropped.jpg",
+      "size": [
+        868,
+        578
+      ]
+    },
+    {
+      "source": "type1_cropped_2_ipl1_cropped.jpg",
+      "size": [
+        586,
+        380
+      ]
+    },
+    {
+      "source": "type1_cropped_3_nba1_cropped.jpg",
+      "size": [
+        929,
+        1366
+      ]
+    },
+    {
+      "source": "type2_text_overlay_1_fifa1_text.jpg",
+      "size": [
+        960,
+        640
+      ]
+    },
+    {
+      "source": "type2_text_overlay_2_ipl1_text.jpg",
+      "size": [
+        680,
+        440
+      ]
+    },
+    {
+      "source": "type2_text_overlay_3_nba1_text.jpg",
+      "size": [
+        1089,
+        1600
+      ]
+    },
+    {
+      "source": "type2_watermarked_1_fifa1_watermark.jpg",
+      "size": [
+        960,
+        640
+      ]
+    },
+    {
+      "source": "type2_watermarked_2_ipl1_watermark.jpg",
+      "size": [
+        680,
+        440
+      ]
+    },
+    {
+      "source": "type2_watermarked_3_nba1_watermark.jpg",
+      "size": [
+        1089,
+        1600
+      ]
+    },
+    {
+      "source": "type3_ai_simulated_1_fifa1_ai_sim.jpg",
+      "size": [
+        960,
+        640
+      ]
+    },
+    {
+      "source": "type3_ai_simulated_2_ipl1_ai_sim.jpg",
+      "size": [
+        680,
+        440
+      ]
+    },
+    {
+      "source": "type3_ai_simulated_3_nba1_ai_sim.jpg",
+      "size": [
+        1089,
+        1600
+      ]
+    },
+    {
+      "source": "type4_mixed_compress_watermark_1_fifa1_mixed2.jpg",
+      "size": [
+        960,
+        640
+      ]
+    },
+    {
+      "source": "type4_mixed_compress_watermark_2_ipl1_mixed2.jpg",
+      "size": [
+        680,
+        440
+      ]
+    },
+    {
+      "source": "type4_mixed_compress_watermark_3_nba1_mixed2.jpg",
+      "size": [
+        1089,
+        1600
+      ]
+    },
+    {
+      "source": "type4_mixed_crop_text_1_fifa1_mixed1.jpg",
+      "size": [
+        868,
+        578
+      ]
+    },
+    {
+      "source": "type4_mixed_crop_text_2_ipl1_mixed1.jpg",
+      "size": [
+        586,
+        380
+      ]
+    },
+    {
+      "source": "type4_mixed_crop_text_3_nba1_mixed1.jpg",
+      "size": [
+        929,
+        1366
+      ]
+    }
+  ],
+  "files": [
+    {
+      "folder": "originals",
+      "file": "fifa1_original.jpg",
+      "source": "fifa1.jpg",
+      "variant": "original"
+    },
+    {
+      "folder": "type1_cropped",
+      "file": "fifa1_cropped.jpg",
+      "source": "fifa1.jpg",
+      "variant": "crop"
+    },
+    {
+      "folder": "type1_compressed",
+      "file": "fifa1_compressed.jpg",
+      "source": "fifa1.jpg",
+      "variant": "compression"
+    },
+    {
+      "folder": "type2_text_overlay",
+      "file": "fifa1_text.jpg",
+      "source": "fifa1.jpg",
+      "variant": "text"
+    },
+    {
+      "folder": "type2_watermarked",
+      "file": "fifa1_watermark.jpg",
+      "source": "fifa1.jpg",
+      "variant": "watermark"
+    },
+    {
+      "folder": "type3_ai_simulated",
+      "file": "fifa1_ai_sim.jpg",
+      "source": "fifa1.jpg",
+      "variant": "ai"
+    },
+    {
+      "folder": "type4_mixed_crop_text",
+      "file": "fifa1_mixed1.jpg",
+      "source": "fifa1.jpg",
+      "variant": "crop+text"
+    },
+    {
+      "folder": "type4_mixed_compress_watermark",
+      "file": "fifa1_mixed2.jpg",
+      "source": "fifa1.jpg",
+      "variant": "watermark+compression"
+    },
+    {
+      "folder": "originals",
+      "file": "ipl1_original.jpg",
+      "source": "ipl1.jpg",
+      "variant": "original"
+    },
+    {
+      "folder": "type1_cropped",
+      "file": "ipl1_cropped.jpg",
+      "source": "ipl1.jpg",
+      "variant": "crop"
+    },
+    {
+      "folder": "type1_compressed",
+      "file": "ipl1_compressed.jpg",
+      "source": "ipl1.jpg",
+      "variant": "compression"
+    },
+    {
+      "folder": "type2_text_overlay",
+      "file": "ipl1_text.jpg",
+      "source": "ipl1.jpg",
+      "variant": "text"
+    },
+    {
+      "folder": "type2_watermarked",
+      "file": "ipl1_watermark.jpg",
+      "source": "ipl1.jpg",
+      "variant": "watermark"
+    },
+    {
+      "folder": "type3_ai_simulated",
+      "file": "ipl1_ai_sim.jpg",
+      "source": "ipl1.jpg",
+      "variant": "ai"
+    },
+    {
+      "folder": "type4_mixed_crop_text",
+      "file": "ipl1_mixed1.jpg",
+      "source": "ipl1.jpg",
+      "variant": "crop+text"
+    },
+    {
+      "folder": "type4_mixed_compress_watermark",
+      "file": "ipl1_mixed2.jpg",
+      "source": "ipl1.jpg",
+      "variant": "watermark+compression"
+    },
+    {
+      "folder": "originals",
+      "file": "nba1_original.jpg",
+      "source": "nba1.jpg",
+      "variant": "original"
+    },
+    {
+      "folder": "type1_cropped",
+      "file": "nba1_cropped.jpg",
+      "source": "nba1.jpg",
+      "variant": "crop"
+    },
+    {
+      "folder": "type1_compressed",
+      "file": "nba1_compressed.jpg",
+      "source": "nba1.jpg",
+      "variant": "compression"
+    },
+    {
+      "folder": "type2_text_overlay",
+      "file": "nba1_text.jpg",
+      "source": "nba1.jpg",
+      "variant": "text"
+    },
+    {
+      "folder": "type2_watermarked",
+      "file": "nba1_watermark.jpg",
+      "source": "nba1.jpg",
+      "variant": "watermark"
+    },
+    {
+      "folder": "type3_ai_simulated",
+      "file": "nba1_ai_sim.jpg",
+      "source": "nba1.jpg",
+      "variant": "ai"
+    },
+    {
+      "folder": "type4_mixed_crop_text",
+      "file": "nba1_mixed1.jpg",
+      "source": "nba1.jpg",
+      "variant": "crop+text"
+    },
+    {
+      "folder": "type4_mixed_compress_watermark",
+      "file": "nba1_mixed2.jpg",
+      "source": "nba1.jpg",
+      "variant": "watermark+compression"
+    },
+    {
+      "folder": "originals",
+      "file": "type1_compressed_1_fifa1_compressed_original.jpg",
+      "source": "type1_compressed_1_fifa1_compressed.jpg",
+      "variant": "original"
+    },
+    {
+      "folder": "type1_cropped",
+      "file": "type1_compressed_1_fifa1_compressed_cropped.jpg",
+      "source": "type1_compressed_1_fifa1_compressed.jpg",
+      "variant": "crop"
+    },
+    {
+      "folder": "type1_compressed",
+      "file": "type1_compressed_1_fifa1_compressed_compressed.jpg",
+      "source": "type1_compressed_1_fifa1_compressed.jpg",
+      "variant": "compression"
+    },
+    {
+      "folder": "type2_text_overlay",
+      "file": "type1_compressed_1_fifa1_compressed_text.jpg",
+      "source": "type1_compressed_1_fifa1_compressed.jpg",
+      "variant": "text"
+    },
+    {
+      "folder": "type2_watermarked",
+      "file": "type1_compressed_1_fifa1_compressed_watermark.jpg",
+      "source": "type1_compressed_1_fifa1_compressed.jpg",
+      "variant": "watermark"
+    },
+    {
+      "folder": "type3_ai_simulated",
+      "file": "type1_compressed_1_fifa1_compressed_ai_sim.jpg",
+      "source": "type1_compressed_1_fifa1_compressed.jpg",
+      "variant": "ai"
+    },
+    {
+      "folder": "type4_mixed_crop_text",
+      "file": "type1_compressed_1_fifa1_compressed_mixed1.jpg",
+      "source": "type1_compressed_1_fifa1_compressed.jpg",
+      "variant": "crop+text"
+    },
+    {
+      "folder": "type4_mixed_compress_watermark",
+      "file": "type1_compressed_1_fifa1_compressed_mixed2.jpg",
+      "source": "type1_compressed_1_fifa1_compressed.jpg",
+      "variant": "watermark+compression"
+    },
+    {
+      "folder": "originals",
+      "file": "type1_compressed_2_ipl1_compressed_original.jpg",
+      "source": "type1_compressed_2_ipl1_compressed.jpg",
+      "variant": "original"
+    },
+    {
+      "folder": "type1_cropped",
+      "file": "type1_compressed_2_ipl1_compressed_cropped.jpg",
+      "source": "type1_compressed_2_ipl1_compressed.jpg",
+      "variant": "crop"
+    },
+    {
+      "folder": "type1_compressed",
+      "file": "type1_compressed_2_ipl1_compressed_compressed.jpg",
+      "source": "type1_compressed_2_ipl1_compressed.jpg",
+      "variant": "compression"
+    },
+    {
+      "folder": "type2_text_overlay",
+      "file": "type1_compressed_2_ipl1_compressed_text.jpg",
+      "source": "type1_compressed_2_ipl1_compressed.jpg",
+      "variant": "text"
+    },
+    {
+      "folder": "type2_watermarked",
+      "file": "type1_compressed_2_ipl1_compressed_watermark.jpg",
+      "source": "type1_compressed_2_ipl1_compressed.jpg",
+      "variant": "watermark"
+    },
+    {
+      "folder": "type3_ai_simulated",
+      "file": "type1_compressed_2_ipl1_compressed_ai_sim.jpg",
+      "source": "type1_compressed_2_ipl1_compressed.jpg",
+      "variant": "ai"
+    },
+    {
+      "folder": "type4_mixed_crop_text",
+      "file": "type1_compressed_2_ipl1_compressed_mixed1.jpg",
+      "source": "type1_compressed_2_ipl1_compressed.jpg",
+      "variant": "crop+text"
+    },
+    {
+      "folder": "type4_mixed_compress_watermark",
+      "file": "type1_compressed_2_ipl1_compressed_mixed2.jpg",
+      "source": "type1_compressed_2_ipl1_compressed.jpg",
+      "variant": "watermark+compression"
+    },
+    {
+      "folder": "originals",
+      "file": "type1_compressed_3_nba1_compressed_original.jpg",
+      "source": "type1_compressed_3_nba1_compressed.jpg",
+      "variant": "original"
+    },
+    {
+      "folder": "type1_cropped",
+      "file": "type1_compressed_3_nba1_compressed_cropped.jpg",
+      "source": "type1_compressed_3_nba1_compressed.jpg",
+      "variant": "crop"
+    },
+    {
+      "folder": "type1_compressed",
+      "file": "type1_compressed_3_nba1_compressed_compressed.jpg",
+      "source": "type1_compressed_3_nba1_compressed.jpg",
+      "variant": "compression"
+    },
+    {
+      "folder": "type2_text_overlay",
+      "file": "type1_compressed_3_nba1_compressed_text.jpg",
+      "source": "type1_compressed_3_nba1_compressed.jpg",
+      "variant": "text"
+    },
+    {
+      "folder": "type2_watermarked",
+      "file": "type1_compressed_3_nba1_compressed_watermark.jpg",
+      "source": "type1_compressed_3_nba1_compressed.jpg",
+      "variant": "watermark"
+    },
+    {
+      "folder": "type3_ai_simulated",
+      "file": "type1_compressed_3_nba1_compressed_ai_sim.jpg",
+      "source": "type1_compressed_3_nba1_compressed.jpg",
+      "variant": "ai"
+    },
+    {
+      "folder": "type4_mixed_crop_text",
+      "file": "type1_compressed_3_nba1_compressed_mixed1.jpg",
+      "source": "type1_compressed_3_nba1_compressed.jpg",
+      "variant": "crop+text"
+    },
+    {
+      "folder": "type4_mixed_compress_watermark",
+      "file": "type1_compressed_3_nba1_compressed_mixed2.jpg",
+      "source": "type1_compressed_3_nba1_compressed.jpg",
+      "variant": "watermark+compression"
+    },
+    {
+      "folder": "originals",
+      "file": "type1_cropped_1_fifa1_cropped_original.jpg",
+      "source": "type1_cropped_1_fifa1_cropped.jpg",
+      "variant": "original"
+    },
+    {
+      "folder": "type1_cropped",
+      "file": "type1_cropped_1_fifa1_cropped_cropped.jpg",
+      "source": "type1_cropped_1_fifa1_cropped.jpg",
+      "variant": "crop"
+    },
+    {
+      "folder": "type1_compressed",
+      "file": "type1_cropped_1_fifa1_cropped_compressed.jpg",
+      "source": "type1_cropped_1_fifa1_cropped.jpg",
+      "variant": "compression"
+    },
+    {
+      "folder": "type2_text_overlay",
+      "file": "type1_cropped_1_fifa1_cropped_text.jpg",
+      "source": "type1_cropped_1_fifa1_cropped.jpg",
+      "variant": "text"
+    },
+    {
+      "folder": "type2_watermarked",
+      "file": "type1_cropped_1_fifa1_cropped_watermark.jpg",
+      "source": "type1_cropped_1_fifa1_cropped.jpg",
+      "variant": "watermark"
+    },
+    {
+      "folder": "type3_ai_simulated",
+      "file": "type1_cropped_1_fifa1_cropped_ai_sim.jpg",
+      "source": "type1_cropped_1_fifa1_cropped.jpg",
+      "variant": "ai"
+    },
+    {
+      "folder": "type4_mixed_crop_text",
+      "file": "type1_cropped_1_fifa1_cropped_mixed1.jpg",
+      "source": "type1_cropped_1_fifa1_cropped.jpg",
+      "variant": "crop+text"
+    },
+    {
+      "folder": "type4_mixed_compress_watermark",
+      "file": "type1_cropped_1_fifa1_cropped_mixed2.jpg",
+      "source": "type1_cropped_1_fifa1_cropped.jpg",
+      "variant": "watermark+compression"
+    },
+    {
+      "folder": "originals",
+      "file": "type1_cropped_2_ipl1_cropped_original.jpg",
+      "source": "type1_cropped_2_ipl1_cropped.jpg",
+      "variant": "original"
+    },
+    {
+      "folder": "type1_cropped",
+      "file": "type1_cropped_2_ipl1_cropped_cropped.jpg",
+      "source": "type1_cropped_2_ipl1_cropped.jpg",
+      "variant": "crop"
+    },
+    {
+      "folder": "type1_compressed",
+      "file": "type1_cropped_2_ipl1_cropped_compressed.jpg",
+      "source": "type1_cropped_2_ipl1_cropped.jpg",
+      "variant": "compression"
+    },
+    {
+      "folder": "type2_text_overlay",
+      "file": "type1_cropped_2_ipl1_cropped_text.jpg",
+      "source": "type1_cropped_2_ipl1_cropped.jpg",
+      "variant": "text"
+    },
+    {
+      "folder": "type2_watermarked",
+      "file": "type1_cropped_2_ipl1_cropped_watermark.jpg",
+      "source": "type1_cropped_2_ipl1_cropped.jpg",
+      "variant": "watermark"
+    },
+    {
+      "folder": "type3_ai_simulated",
+      "file": "type1_cropped_2_ipl1_cropped_ai_sim.jpg",
+      "source": "type1_cropped_2_ipl1_cropped.jpg",
+      "variant": "ai"
+    },
+    {
+      "folder": "type4_mixed_crop_text",
+      "file": "type1_cropped_2_ipl1_cropped_mixed1.jpg",
+      "source": "type1_cropped_2_ipl1_cropped.jpg",
+      "variant": "crop+text"
+    },
+    {
+      "folder": "type4_mixed_compress_watermark",
+      "file": "type1_cropped_2_ipl1_cropped_mixed2.jpg",
+      "source": "type1_cropped_2_ipl1_cropped.jpg",
+      "variant": "watermark+compression"
+    },
+    {
+      "folder": "originals",
+      "file": "type1_cropped_3_nba1_cropped_original.jpg",
+      "source": "type1_cropped_3_nba1_cropped.jpg",
+      "variant": "original"
+    },
+    {
+      "folder": "type1_cropped",
+      "file": "type1_cropped_3_nba1_cropped_cropped.jpg",
+      "source": "type1_cropped_3_nba1_cropped.jpg",
+      "variant": "crop"
+    },
+    {
+      "folder": "type1_compressed",
+      "file": "type1_cropped_3_nba1_cropped_compressed.jpg",
+      "source": "type1_cropped_3_nba1_cropped.jpg",
+      "variant": "compression"
+    },
+    {
+      "folder": "type2_text_overlay",
+      "file": "type1_cropped_3_nba1_cropped_text.jpg",
+      "source": "type1_cropped_3_nba1_cropped.jpg",
+      "variant": "text"
+    },
+    {
+      "folder": "type2_watermarked",
+      "file": "type1_cropped_3_nba1_cropped_watermark.jpg",
+      "source": "type1_cropped_3_nba1_cropped.jpg",
+      "variant": "watermark"
+    },
+    {
+      "folder": "type3_ai_simulated",
+      "file": "type1_cropped_3_nba1_cropped_ai_sim.jpg",
+      "source": "type1_cropped_3_nba1_cropped.jpg",
+      "variant": "ai"
+    },
+    {
+      "folder": "type4_mixed_crop_text",
+      "file": "type1_cropped_3_nba1_cropped_mixed1.jpg",
+      "source": "type1_cropped_3_nba1_cropped.jpg",
+      "variant": "crop+text"
+    },
+    {
+      "folder": "type4_mixed_compress_watermark",
+      "file": "type1_cropped_3_nba1_cropped_mixed2.jpg",
+      "source": "type1_cropped_3_nba1_cropped.jpg",
+      "variant": "watermark+compression"
+    },
+    {
+      "folder": "originals",
+      "file": "type2_text_overlay_1_fifa1_text_original.jpg",
+      "source": "type2_text_overlay_1_fifa1_text.jpg",
+      "variant": "original"
+    },
+    {
+      "folder": "type1_cropped",
+      "file": "type2_text_overlay_1_fifa1_text_cropped.jpg",
+      "source": "type2_text_overlay_1_fifa1_text.jpg",
+      "variant": "crop"
+    },
+    {
+      "folder": "type1_compressed",
+      "file": "type2_text_overlay_1_fifa1_text_compressed.jpg",
+      "source": "type2_text_overlay_1_fifa1_text.jpg",
+      "variant": "compression"
+    },
+    {
+      "folder": "type2_text_overlay",
+      "file": "type2_text_overlay_1_fifa1_text_text.jpg",
+      "source": "type2_text_overlay_1_fifa1_text.jpg",
+      "variant": "text"
+    },
+    {
+      "folder": "type2_watermarked",
+      "file": "type2_text_overlay_1_fifa1_text_watermark.jpg",
+      "source": "type2_text_overlay_1_fifa1_text.jpg",
+      "variant": "watermark"
+    },
+    {
+      "folder": "type3_ai_simulated",
+      "file": "type2_text_overlay_1_fifa1_text_ai_sim.jpg",
+      "source": "type2_text_overlay_1_fifa1_text.jpg",
+      "variant": "ai"
+    },
+    {
+      "folder": "type4_mixed_crop_text",
+      "file": "type2_text_overlay_1_fifa1_text_mixed1.jpg",
+      "source": "type2_text_overlay_1_fifa1_text.jpg",
+      "variant": "crop+text"
+    },
+    {
+      "folder": "type4_mixed_compress_watermark",
+      "file": "type2_text_overlay_1_fifa1_text_mixed2.jpg",
+      "source": "type2_text_overlay_1_fifa1_text.jpg",
+      "variant": "watermark+compression"
+    },
+    {
+      "folder": "originals",
+      "file": "type2_text_overlay_2_ipl1_text_original.jpg",
+      "source": "type2_text_overlay_2_ipl1_text.jpg",
+      "variant": "original"
+    },
+    {
+      "folder": "type1_cropped",
+      "file": "type2_text_overlay_2_ipl1_text_cropped.jpg",
+      "source": "type2_text_overlay_2_ipl1_text.jpg",
+      "variant": "crop"
+    },
+    {
+      "folder": "type1_compressed",
+      "file": "type2_text_overlay_2_ipl1_text_compressed.jpg",
+      "source": "type2_text_overlay_2_ipl1_text.jpg",
+      "variant": "compression"
+    },
+    {
+      "folder": "type2_text_overlay",
+      "file": "type2_text_overlay_2_ipl1_text_text.jpg",
+      "source": "type2_text_overlay_2_ipl1_text.jpg",
+      "variant": "text"
+    },
+    {
+      "folder": "type2_watermarked",
+      "file": "type2_text_overlay_2_ipl1_text_watermark.jpg",
+      "source": "type2_text_overlay_2_ipl1_text.jpg",
+      "variant": "watermark"
+    },
+    {
+      "folder": "type3_ai_simulated",
+      "file": "type2_text_overlay_2_ipl1_text_ai_sim.jpg",
+      "source": "type2_text_overlay_2_ipl1_text.jpg",
+      "variant": "ai"
+    },
+    {
+      "folder": "type4_mixed_crop_text",
+      "file": "type2_text_overlay_2_ipl1_text_mixed1.jpg",
+      "source": "type2_text_overlay_2_ipl1_text.jpg",
+      "variant": "crop+text"
+    },
+    {
+      "folder": "type4_mixed_compress_watermark",
+      "file": "type2_text_overlay_2_ipl1_text_mixed2.jpg",
+      "source": "type2_text_overlay_2_ipl1_text.jpg",
+      "variant": "watermark+compression"
+    },
+    {
+      "folder": "originals",
+      "file": "type2_text_overlay_3_nba1_text_original.jpg",
+      "source": "type2_text_overlay_3_nba1_text.jpg",
+      "variant": "original"
+    },
+    {
+      "folder": "type1_cropped",
+      "file": "type2_text_overlay_3_nba1_text_cropped.jpg",
+      "source": "type2_text_overlay_3_nba1_text.jpg",
+      "variant": "crop"
+    },
+    {
+      "folder": "type1_compressed",
+      "file": "type2_text_overlay_3_nba1_text_compressed.jpg",
+      "source": "type2_text_overlay_3_nba1_text.jpg",
+      "variant": "compression"
+    },
+    {
+      "folder": "type2_text_overlay",
+      "file": "type2_text_overlay_3_nba1_text_text.jpg",
+      "source": "type2_text_overlay_3_nba1_text.jpg",
+      "variant": "text"
+    },
+    {
+      "folder": "type2_watermarked",
+      "file": "type2_text_overlay_3_nba1_text_watermark.jpg",
+      "source": "type2_text_overlay_3_nba1_text.jpg",
+      "variant": "watermark"
+    },
+    {
+      "folder": "type3_ai_simulated",
+      "file": "type2_text_overlay_3_nba1_text_ai_sim.jpg",
+      "source": "type2_text_overlay_3_nba1_text.jpg",
+      "variant": "ai"
+    },
+    {
+      "folder": "type4_mixed_crop_text",
+      "file": "type2_text_overlay_3_nba1_text_mixed1.jpg",
+      "source": "type2_text_overlay_3_nba1_text.jpg",
+      "variant": "crop+text"
+    },
+    {
+      "folder": "type4_mixed_compress_watermark",
+      "file": "type2_text_overlay_3_nba1_text_mixed2.jpg",
+      "source": "type2_text_overlay_3_nba1_text.jpg",
+      "variant": "watermark+compression"
+    },
+    {
+      "folder": "originals",
+      "file": "type2_watermarked_1_fifa1_watermark_original.jpg",
+      "source": "type2_watermarked_1_fifa1_watermark.jpg",
+      "variant": "original"
+    },
+    {
+      "folder": "type1_cropped",
+      "file": "type2_watermarked_1_fifa1_watermark_cropped.jpg",
+      "source": "type2_watermarked_1_fifa1_watermark.jpg",
+      "variant": "crop"
+    },
+    {
+      "folder": "type1_compressed",
+      "file": "type2_watermarked_1_fifa1_watermark_compressed.jpg",
+      "source": "type2_watermarked_1_fifa1_watermark.jpg",
+      "variant": "compression"
+    },
+    {
+      "folder": "type2_text_overlay",
+      "file": "type2_watermarked_1_fifa1_watermark_text.jpg",
+      "source": "type2_watermarked_1_fifa1_watermark.jpg",
+      "variant": "text"
+    },
+    {
+      "folder": "type2_watermarked",
+      "file": "type2_watermarked_1_fifa1_watermark_watermark.jpg",
+      "source": "type2_watermarked_1_fifa1_watermark.jpg",
+      "variant": "watermark"
+    },
+    {
+      "folder": "type3_ai_simulated",
+      "file": "type2_watermarked_1_fifa1_watermark_ai_sim.jpg",
+      "source": "type2_watermarked_1_fifa1_watermark.jpg",
+      "variant": "ai"
+    },
+    {
+      "folder": "type4_mixed_crop_text",
+      "file": "type2_watermarked_1_fifa1_watermark_mixed1.jpg",
+      "source": "type2_watermarked_1_fifa1_watermark.jpg",
+      "variant": "crop+text"
+    },
+    {
+      "folder": "type4_mixed_compress_watermark",
+      "file": "type2_watermarked_1_fifa1_watermark_mixed2.jpg",
+      "source": "type2_watermarked_1_fifa1_watermark.jpg",
+      "variant": "watermark+compression"
+    },
+    {
+      "folder": "originals",
+      "file": "type2_watermarked_2_ipl1_watermark_original.jpg",
+      "source": "type2_watermarked_2_ipl1_watermark.jpg",
+      "variant": "original"
+    },
+    {
+      "folder": "type1_cropped",
+      "file": "type2_watermarked_2_ipl1_watermark_cropped.jpg",
+      "source": "type2_watermarked_2_ipl1_watermark.jpg",
+      "variant": "crop"
+    },
+    {
+      "folder": "type1_compressed",
+      "file": "type2_watermarked_2_ipl1_watermark_compressed.jpg",
+      "source": "type2_watermarked_2_ipl1_watermark.jpg",
+      "variant": "compression"
+    },
+    {
+      "folder": "type2_text_overlay",
+      "file": "type2_watermarked_2_ipl1_watermark_text.jpg",
+      "source": "type2_watermarked_2_ipl1_watermark.jpg",
+      "variant": "text"
+    },
+    {
+      "folder": "type2_watermarked",
+      "file": "type2_watermarked_2_ipl1_watermark_watermark.jpg",
+      "source": "type2_watermarked_2_ipl1_watermark.jpg",
+      "variant": "watermark"
+    },
+    {
+      "folder": "type3_ai_simulated",
+      "file": "type2_watermarked_2_ipl1_watermark_ai_sim.jpg",
+      "source": "type2_watermarked_2_ipl1_watermark.jpg",
+      "variant": "ai"
+    },
+    {
+      "folder": "type4_mixed_crop_text",
+      "file": "type2_watermarked_2_ipl1_watermark_mixed1.jpg",
+      "source": "type2_watermarked_2_ipl1_watermark.jpg",
+      "variant": "crop+text"
+    },
+    {
+      "folder": "type4_mixed_compress_watermark",
+      "file": "type2_watermarked_2_ipl1_watermark_mixed2.jpg",
+      "source": "type2_watermarked_2_ipl1_watermark.jpg",
+      "variant": "watermark+compression"
+    },
+    {
+      "folder": "originals",
+      "file": "type2_watermarked_3_nba1_watermark_original.jpg",
+      "source": "type2_watermarked_3_nba1_watermark.jpg",
+      "variant": "original"
+    },
+    {
+      "folder": "type1_cropped",
+      "file": "type2_watermarked_3_nba1_watermark_cropped.jpg",
+      "source": "type2_watermarked_3_nba1_watermark.jpg",
+      "variant": "crop"
+    },
+    {
+      "folder": "type1_compressed",
+      "file": "type2_watermarked_3_nba1_watermark_compressed.jpg",
+      "source": "type2_watermarked_3_nba1_watermark.jpg",
+      "variant": "compression"
+    },
+    {
+      "folder": "type2_text_overlay",
+      "file": "type2_watermarked_3_nba1_watermark_text.jpg",
+      "source": "type2_watermarked_3_nba1_watermark.jpg",
+      "variant": "text"
+    },
+    {
+      "folder": "type2_watermarked",
+      "file": "type2_watermarked_3_nba1_watermark_watermark.jpg",
+      "source": "type2_watermarked_3_nba1_watermark.jpg",
+      "variant": "watermark"
+    },
+    {
+      "folder": "type3_ai_simulated",
+      "file": "type2_watermarked_3_nba1_watermark_ai_sim.jpg",
+      "source": "type2_watermarked_3_nba1_watermark.jpg",
+      "variant": "ai"
+    },
+    {
+      "folder": "type4_mixed_crop_text",
+      "file": "type2_watermarked_3_nba1_watermark_mixed1.jpg",
+      "source": "type2_watermarked_3_nba1_watermark.jpg",
+      "variant": "crop+text"
+    },
+    {
+      "folder": "type4_mixed_compress_watermark",
+      "file": "type2_watermarked_3_nba1_watermark_mixed2.jpg",
+      "source": "type2_watermarked_3_nba1_watermark.jpg",
+      "variant": "watermark+compression"
+    },
+    {
+      "folder": "originals",
+      "file": "type3_ai_simulated_1_fifa1_ai_sim_original.jpg",
+      "source": "type3_ai_simulated_1_fifa1_ai_sim.jpg",
+      "variant": "original"
+    },
+    {
+      "folder": "type1_cropped",
+      "file": "type3_ai_simulated_1_fifa1_ai_sim_cropped.jpg",
+      "source": "type3_ai_simulated_1_fifa1_ai_sim.jpg",
+      "variant": "crop"
+    },
+    {
+      "folder": "type1_compressed",
+      "file": "type3_ai_simulated_1_fifa1_ai_sim_compressed.jpg",
+      "source": "type3_ai_simulated_1_fifa1_ai_sim.jpg",
+      "variant": "compression"
+    },
+    {
+      "folder": "type2_text_overlay",
+      "file": "type3_ai_simulated_1_fifa1_ai_sim_text.jpg",
+      "source": "type3_ai_simulated_1_fifa1_ai_sim.jpg",
+      "variant": "text"
+    },
+    {
+      "folder": "type2_watermarked",
+      "file": "type3_ai_simulated_1_fifa1_ai_sim_watermark.jpg",
+      "source": "type3_ai_simulated_1_fifa1_ai_sim.jpg",
+      "variant": "watermark"
+    },
+    {
+      "folder": "type3_ai_simulated",
+      "file": "type3_ai_simulated_1_fifa1_ai_sim_ai_sim.jpg",
+      "source": "type3_ai_simulated_1_fifa1_ai_sim.jpg",
+      "variant": "ai"
+    },
+    {
+      "folder": "type4_mixed_crop_text",
+      "file": "type3_ai_simulated_1_fifa1_ai_sim_mixed1.jpg",
+      "source": "type3_ai_simulated_1_fifa1_ai_sim.jpg",
+      "variant": "crop+text"
+    },
+    {
+      "folder": "type4_mixed_compress_watermark",
+      "file": "type3_ai_simulated_1_fifa1_ai_sim_mixed2.jpg",
+      "source": "type3_ai_simulated_1_fifa1_ai_sim.jpg",
+      "variant": "watermark+compression"
+    },
+    {
+      "folder": "originals",
+      "file": "type3_ai_simulated_2_ipl1_ai_sim_original.jpg",
+      "source": "type3_ai_simulated_2_ipl1_ai_sim.jpg",
+      "variant": "original"
+    },
+    {
+      "folder": "type1_cropped",
+      "file": "type3_ai_simulated_2_ipl1_ai_sim_cropped.jpg",
+      "source": "type3_ai_simulated_2_ipl1_ai_sim.jpg",
+      "variant": "crop"
+    },
+    {
+      "folder": "type1_compressed",
+      "file": "type3_ai_simulated_2_ipl1_ai_sim_compressed.jpg",
+      "source": "type3_ai_simulated_2_ipl1_ai_sim.jpg",
+      "variant": "compression"
+    },
+    {
+      "folder": "type2_text_overlay",
+      "file": "type3_ai_simulated_2_ipl1_ai_sim_text.jpg",
+      "source": "type3_ai_simulated_2_ipl1_ai_sim.jpg",
+      "variant": "text"
+    },
+    {
+      "folder": "type2_watermarked",
+      "file": "type3_ai_simulated_2_ipl1_ai_sim_watermark.jpg",
+      "source": "type3_ai_simulated_2_ipl1_ai_sim.jpg",
+      "variant": "watermark"
+    },
+    {
+      "folder": "type3_ai_simulated",
+      "file": "type3_ai_simulated_2_ipl1_ai_sim_ai_sim.jpg",
+      "source": "type3_ai_simulated_2_ipl1_ai_sim.jpg",
+      "variant": "ai"
+    },
+    {
+      "folder": "type4_mixed_crop_text",
+      "file": "type3_ai_simulated_2_ipl1_ai_sim_mixed1.jpg",
+      "source": "type3_ai_simulated_2_ipl1_ai_sim.jpg",
+      "variant": "crop+text"
+    },
+    {
+      "folder": "type4_mixed_compress_watermark",
+      "file": "type3_ai_simulated_2_ipl1_ai_sim_mixed2.jpg",
+      "source": "type3_ai_simulated_2_ipl1_ai_sim.jpg",
+      "variant": "watermark+compression"
+    },
+    {
+      "folder": "originals",
+      "file": "type3_ai_simulated_3_nba1_ai_sim_original.jpg",
+      "source": "type3_ai_simulated_3_nba1_ai_sim.jpg",
+      "variant": "original"
+    },
+    {
+      "folder": "type1_cropped",
+      "file": "type3_ai_simulated_3_nba1_ai_sim_cropped.jpg",
+      "source": "type3_ai_simulated_3_nba1_ai_sim.jpg",
+      "variant": "crop"
+    },
+    {
+      "folder": "type1_compressed",
+      "file": "type3_ai_simulated_3_nba1_ai_sim_compressed.jpg",
+      "source": "type3_ai_simulated_3_nba1_ai_sim.jpg",
+      "variant": "compression"
+    },
+    {
+      "folder": "type2_text_overlay",
+      "file": "type3_ai_simulated_3_nba1_ai_sim_text.jpg",
+      "source": "type3_ai_simulated_3_nba1_ai_sim.jpg",
+      "variant": "text"
+    },
+    {
+      "folder": "type2_watermarked",
+      "file": "type3_ai_simulated_3_nba1_ai_sim_watermark.jpg",
+      "source": "type3_ai_simulated_3_nba1_ai_sim.jpg",
+      "variant": "watermark"
+    },
+    {
+      "folder": "type3_ai_simulated",
+      "file": "type3_ai_simulated_3_nba1_ai_sim_ai_sim.jpg",
+      "source": "type3_ai_simulated_3_nba1_ai_sim.jpg",
+      "variant": "ai"
+    },
+    {
+      "folder": "type4_mixed_crop_text",
+      "file": "type3_ai_simulated_3_nba1_ai_sim_mixed1.jpg",
+      "source": "type3_ai_simulated_3_nba1_ai_sim.jpg",
+      "variant": "crop+text"
+    },
+    {
+      "folder": "type4_mixed_compress_watermark",
+      "file": "type3_ai_simulated_3_nba1_ai_sim_mixed2.jpg",
+      "source": "type3_ai_simulated_3_nba1_ai_sim.jpg",
+      "variant": "watermark+compression"
+    },
+    {
+      "folder": "originals",
+      "file": "type4_mixed_compress_watermark_1_fifa1_mixed2_original.jpg",
+      "source": "type4_mixed_compress_watermark_1_fifa1_mixed2.jpg",
+      "variant": "original"
+    },
+    {
+      "folder": "type1_cropped",
+      "file": "type4_mixed_compress_watermark_1_fifa1_mixed2_cropped.jpg",
+      "source": "type4_mixed_compress_watermark_1_fifa1_mixed2.jpg",
+      "variant": "crop"
+    },
+    {
+      "folder": "type1_compressed",
+      "file": "type4_mixed_compress_watermark_1_fifa1_mixed2_compressed.jpg",
+      "source": "type4_mixed_compress_watermark_1_fifa1_mixed2.jpg",
+      "variant": "compression"
+    },
+    {
+      "folder": "type2_text_overlay",
+      "file": "type4_mixed_compress_watermark_1_fifa1_mixed2_text.jpg",
+      "source": "type4_mixed_compress_watermark_1_fifa1_mixed2.jpg",
+      "variant": "text"
+    },
+    {
+      "folder": "type2_watermarked",
+      "file": "type4_mixed_compress_watermark_1_fifa1_mixed2_watermark.jpg",
+      "source": "type4_mixed_compress_watermark_1_fifa1_mixed2.jpg",
+      "variant": "watermark"
+    },
+    {
+      "folder": "type3_ai_simulated",
+      "file": "type4_mixed_compress_watermark_1_fifa1_mixed2_ai_sim.jpg",
+      "source": "type4_mixed_compress_watermark_1_fifa1_mixed2.jpg",
+      "variant": "ai"
+    },
+    {
+      "folder": "type4_mixed_crop_text",
+      "file": "type4_mixed_compress_watermark_1_fifa1_mixed2_mixed1.jpg",
+      "source": "type4_mixed_compress_watermark_1_fifa1_mixed2.jpg",
+      "variant": "crop+text"
+    },
+    {
+      "folder": "type4_mixed_compress_watermark",
+      "file": "type4_mixed_compress_watermark_1_fifa1_mixed2_mixed2.jpg",
+      "source": "type4_mixed_compress_watermark_1_fifa1_mixed2.jpg",
+      "variant": "watermark+compression"
+    },
+    {
+      "folder": "originals",
+      "file": "type4_mixed_compress_watermark_2_ipl1_mixed2_original.jpg",
+      "source": "type4_mixed_compress_watermark_2_ipl1_mixed2.jpg",
+      "variant": "original"
+    },
+    {
+      "folder": "type1_cropped",
+      "file": "type4_mixed_compress_watermark_2_ipl1_mixed2_cropped.jpg",
+      "source": "type4_mixed_compress_watermark_2_ipl1_mixed2.jpg",
+      "variant": "crop"
+    },
+    {
+      "folder": "type1_compressed",
+      "file": "type4_mixed_compress_watermark_2_ipl1_mixed2_compressed.jpg",
+      "source": "type4_mixed_compress_watermark_2_ipl1_mixed2.jpg",
+      "variant": "compression"
+    },
+    {
+      "folder": "type2_text_overlay",
+      "file": "type4_mixed_compress_watermark_2_ipl1_mixed2_text.jpg",
+      "source": "type4_mixed_compress_watermark_2_ipl1_mixed2.jpg",
+      "variant": "text"
+    },
+    {
+      "folder": "type2_watermarked",
+      "file": "type4_mixed_compress_watermark_2_ipl1_mixed2_watermark.jpg",
+      "source": "type4_mixed_compress_watermark_2_ipl1_mixed2.jpg",
+      "variant": "watermark"
+    },
+    {
+      "folder": "type3_ai_simulated",
+      "file": "type4_mixed_compress_watermark_2_ipl1_mixed2_ai_sim.jpg",
+      "source": "type4_mixed_compress_watermark_2_ipl1_mixed2.jpg",
+      "variant": "ai"
+    },
+    {
+      "folder": "type4_mixed_crop_text",
+      "file": "type4_mixed_compress_watermark_2_ipl1_mixed2_mixed1.jpg",
+      "source": "type4_mixed_compress_watermark_2_ipl1_mixed2.jpg",
+      "variant": "crop+text"
+    },
+    {
+      "folder": "type4_mixed_compress_watermark",
+      "file": "type4_mixed_compress_watermark_2_ipl1_mixed2_mixed2.jpg",
+      "source": "type4_mixed_compress_watermark_2_ipl1_mixed2.jpg",
+      "variant": "watermark+compression"
+    },
+    {
+      "folder": "originals",
+      "file": "type4_mixed_compress_watermark_3_nba1_mixed2_original.jpg",
+      "source": "type4_mixed_compress_watermark_3_nba1_mixed2.jpg",
+      "variant": "original"
+    },
+    {
+      "folder": "type1_cropped",
+      "file": "type4_mixed_compress_watermark_3_nba1_mixed2_cropped.jpg",
+      "source": "type4_mixed_compress_watermark_3_nba1_mixed2.jpg",
+      "variant": "crop"
+    },
+    {
+      "folder": "type1_compressed",
+      "file": "type4_mixed_compress_watermark_3_nba1_mixed2_compressed.jpg",
+      "source": "type4_mixed_compress_watermark_3_nba1_mixed2.jpg",
+      "variant": "compression"
+    },
+    {
+      "folder": "type2_text_overlay",
+      "file": "type4_mixed_compress_watermark_3_nba1_mixed2_text.jpg",
+      "source": "type4_mixed_compress_watermark_3_nba1_mixed2.jpg",
+      "variant": "text"
+    },
+    {
+      "folder": "type2_watermarked",
+      "file": "type4_mixed_compress_watermark_3_nba1_mixed2_watermark.jpg",
+      "source": "type4_mixed_compress_watermark_3_nba1_mixed2.jpg",
+      "variant": "watermark"
+    },
+    {
+      "folder": "type3_ai_simulated",
+      "file": "type4_mixed_compress_watermark_3_nba1_mixed2_ai_sim.jpg",
+      "source": "type4_mixed_compress_watermark_3_nba1_mixed2.jpg",
+      "variant": "ai"
+    },
+    {
+      "folder": "type4_mixed_crop_text",
+      "file": "type4_mixed_compress_watermark_3_nba1_mixed2_mixed1.jpg",
+      "source": "type4_mixed_compress_watermark_3_nba1_mixed2.jpg",
+      "variant": "crop+text"
+    },
+    {
+      "folder": "type4_mixed_compress_watermark",
+      "file": "type4_mixed_compress_watermark_3_nba1_mixed2_mixed2.jpg",
+      "source": "type4_mixed_compress_watermark_3_nba1_mixed2.jpg",
+      "variant": "watermark+compression"
+    },
+    {
+      "folder": "originals",
+      "file": "type4_mixed_crop_text_1_fifa1_mixed1_original.jpg",
+      "source": "type4_mixed_crop_text_1_fifa1_mixed1.jpg",
+      "variant": "original"
+    },
+    {
+      "folder": "type1_cropped",
+      "file": "type4_mixed_crop_text_1_fifa1_mixed1_cropped.jpg",
+      "source": "type4_mixed_crop_text_1_fifa1_mixed1.jpg",
+      "variant": "crop"
+    },
+    {
+      "folder": "type1_compressed",
+      "file": "type4_mixed_crop_text_1_fifa1_mixed1_compressed.jpg",
+      "source": "type4_mixed_crop_text_1_fifa1_mixed1.jpg",
+      "variant": "compression"
+    },
+    {
+      "folder": "type2_text_overlay",
+      "file": "type4_mixed_crop_text_1_fifa1_mixed1_text.jpg",
+      "source": "type4_mixed_crop_text_1_fifa1_mixed1.jpg",
+      "variant": "text"
+    },
+    {
+      "folder": "type2_watermarked",
+      "file": "type4_mixed_crop_text_1_fifa1_mixed1_watermark.jpg",
+      "source": "type4_mixed_crop_text_1_fifa1_mixed1.jpg",
+      "variant": "watermark"
+    },
+    {
+      "folder": "type3_ai_simulated",
+      "file": "type4_mixed_crop_text_1_fifa1_mixed1_ai_sim.jpg",
+      "source": "type4_mixed_crop_text_1_fifa1_mixed1.jpg",
+      "variant": "ai"
+    },
+    {
+      "folder": "type4_mixed_crop_text",
+      "file": "type4_mixed_crop_text_1_fifa1_mixed1_mixed1.jpg",
+      "source": "type4_mixed_crop_text_1_fifa1_mixed1.jpg",
+      "variant": "crop+text"
+    },
+    {
+      "folder": "type4_mixed_compress_watermark",
+      "file": "type4_mixed_crop_text_1_fifa1_mixed1_mixed2.jpg",
+      "source": "type4_mixed_crop_text_1_fifa1_mixed1.jpg",
+      "variant": "watermark+compression"
+    },
+    {
+      "folder": "originals",
+      "file": "type4_mixed_crop_text_2_ipl1_mixed1_original.jpg",
+      "source": "type4_mixed_crop_text_2_ipl1_mixed1.jpg",
+      "variant": "original"
+    },
+    {
+      "folder": "type1_cropped",
+      "file": "type4_mixed_crop_text_2_ipl1_mixed1_cropped.jpg",
+      "source": "type4_mixed_crop_text_2_ipl1_mixed1.jpg",
+      "variant": "crop"
+    },
+    {
+      "folder": "type1_compressed",
+      "file": "type4_mixed_crop_text_2_ipl1_mixed1_compressed.jpg",
+      "source": "type4_mixed_crop_text_2_ipl1_mixed1.jpg",
+      "variant": "compression"
+    },
+    {
+      "folder": "type2_text_overlay",
+      "file": "type4_mixed_crop_text_2_ipl1_mixed1_text.jpg",
+      "source": "type4_mixed_crop_text_2_ipl1_mixed1.jpg",
+      "variant": "text"
+    },
+    {
+      "folder": "type2_watermarked",
+      "file": "type4_mixed_crop_text_2_ipl1_mixed1_watermark.jpg",
+      "source": "type4_mixed_crop_text_2_ipl1_mixed1.jpg",
+      "variant": "watermark"
+    },
+    {
+      "folder": "type3_ai_simulated",
+      "file": "type4_mixed_crop_text_2_ipl1_mixed1_ai_sim.jpg",
+      "source": "type4_mixed_crop_text_2_ipl1_mixed1.jpg",
+      "variant": "ai"
+    },
+    {
+      "folder": "type4_mixed_crop_text",
+      "file": "type4_mixed_crop_text_2_ipl1_mixed1_mixed1.jpg",
+      "source": "type4_mixed_crop_text_2_ipl1_mixed1.jpg",
+      "variant": "crop+text"
+    },
+    {
+      "folder": "type4_mixed_compress_watermark",
+      "file": "type4_mixed_crop_text_2_ipl1_mixed1_mixed2.jpg",
+      "source": "type4_mixed_crop_text_2_ipl1_mixed1.jpg",
+      "variant": "watermark+compression"
+    },
+    {
+      "folder": "originals",
+      "file": "type4_mixed_crop_text_3_nba1_mixed1_original.jpg",
+      "source": "type4_mixed_crop_text_3_nba1_mixed1.jpg",
+      "variant": "original"
+    },
+    {
+      "folder": "type1_cropped",
+      "file": "type4_mixed_crop_text_3_nba1_mixed1_cropped.jpg",
+      "source": "type4_mixed_crop_text_3_nba1_mixed1.jpg",
+      "variant": "crop"
+    },
+    {
+      "folder": "type1_compressed",
+      "file": "type4_mixed_crop_text_3_nba1_mixed1_compressed.jpg",
+      "source": "type4_mixed_crop_text_3_nba1_mixed1.jpg",
+      "variant": "compression"
+    },
+    {
+      "folder": "type2_text_overlay",
+      "file": "type4_mixed_crop_text_3_nba1_mixed1_text.jpg",
+      "source": "type4_mixed_crop_text_3_nba1_mixed1.jpg",
+      "variant": "text"
+    },
+    {
+      "folder": "type2_watermarked",
+      "file": "type4_mixed_crop_text_3_nba1_mixed1_watermark.jpg",
+      "source": "type4_mixed_crop_text_3_nba1_mixed1.jpg",
+      "variant": "watermark"
+    },
+    {
+      "folder": "type3_ai_simulated",
+      "file": "type4_mixed_crop_text_3_nba1_mixed1_ai_sim.jpg",
+      "source": "type4_mixed_crop_text_3_nba1_mixed1.jpg",
+      "variant": "ai"
+    },
+    {
+      "folder": "type4_mixed_crop_text",
+      "file": "type4_mixed_crop_text_3_nba1_mixed1_mixed1.jpg",
+      "source": "type4_mixed_crop_text_3_nba1_mixed1.jpg",
+      "variant": "crop+text"
+    },
+    {
+      "folder": "type4_mixed_compress_watermark",
+      "file": "type4_mixed_crop_text_3_nba1_mixed1_mixed2.jpg",
+      "source": "type4_mixed_crop_text_3_nba1_mixed1.jpg",
+      "variant": "watermark+compression"
+    }
+  ]
+}
