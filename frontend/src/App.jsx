@@ -33,6 +33,13 @@ function App() {
 
   const [isAutoScraping, setIsAutoScraping] = useState(false);
   const [registeredAssets, setRegisteredAssets] = useState(0);
+  const [mediaType, setMediaType] = useState('image'); // 'image' or 'video'
+  
+  // New states for demo
+  const [sampleImages, setSampleImages] = useState([]);
+  const [sampleVideos, setSampleVideos] = useState([]);
+  const [selectedViolation, setSelectedViolation] = useState(null);
+  const [showComparisonModal, setShowComparisonModal] = useState(false);
 
   useEffect(() => {
     let interval;
@@ -43,10 +50,25 @@ function App() {
     }
     return () => clearInterval(interval);
   }, [isAutoScraping]);
+  
+  // Load sample images and videos on mount
+  useEffect(() => {
+    fetch("http://localhost:8000/get_sample_images")
+      .then(res => res.json())
+      .then(data => setSampleImages(data.samples))
+      .catch(err => console.error("Failed to load samples:", err));
+    
+    fetch("http://localhost:8000/get_sample_videos")
+      .then(res => res.json())
+      .then(data => setSampleVideos(data.samples))
+      .catch(err => console.error("Failed to load video samples:", err));
+  }, []);
 
   const handleSimulateScrape = async (silent = false) => {
     try {
-      const response = await fetch("http://localhost:8000/simulate_scrape");
+      // Use appropriate endpoint based on media type
+      const endpoint = mediaType === 'video' ? "/simulate_video_scrape" : "/simulate_scrape";
+      const response = await fetch(`http://localhost:8000${endpoint}`);
       const data = await response.json();
       
       if (data.verdict === 'suspicious') {
@@ -87,13 +109,18 @@ function App() {
   const simulateScan = async (file) => {
     setIsScanning(true);
     
+    // Detect if file is video or image
+    const isVideo = file.type.startsWith('video/');
+    
     // Create FormData to send file
     const formData = new FormData();
     formData.append("file", file);
     formData.append("owner", "Official Broadcaster");
 
     try {
-      const response = await fetch("http://localhost:8000/register", {
+      // Use appropriate endpoint based on file type
+      const endpoint = isVideo ? "/register_video" : "/register";
+      const response = await fetch(`http://localhost:8000${endpoint}`, {
         method: "POST",
         body: formData,
       });
@@ -102,7 +129,13 @@ function App() {
       
       if (response.ok) {
         setRegisteredAssets(prev => prev + 1);
-        alert(`Success! Asset Registered.\nAsset ID: ${data.asset_id}\nHash: ${data.phash.substring(0, 10)}...`);
+        
+        // Display appropriate success message based on media type
+        if (isVideo) {
+          alert(`Success! Video Registered.\nAsset ID: ${data.asset_id}\nDuration: ${data.duration.toFixed(2)}s\nFPS: ${data.fps}\nResolution: ${data.resolution}`);
+        } else {
+          alert(`Success! Asset Registered.\nAsset ID: ${data.asset_id}\nHash: ${data.phash.substring(0, 10)}...`);
+        }
       } else {
         alert("Error registering asset: " + JSON.stringify(data));
       }
@@ -125,10 +158,126 @@ function App() {
 
   const handleFileChange = (e) => {
     if (e.target.files && e.target.files.length > 0) {
-      Array.from(e.target.files).forEach(file => simulateScan(file));
-      // Reset input so the same file could be selected again if needed
+      Array.from(e.target.files).forEach(file => {
+        if (mediaType === 'image') {
+          analyzeUploadedImage(file);
+        } else {
+          simulateScan(file);
+        }
+      });
       e.target.value = null;
     }
+  };
+  
+  const analyzeUploadedImage = async (file) => {
+    setIsScanning(true);
+    
+    const formData = new FormData();
+    formData.append("file", file);
+    
+    try {
+      const response = await fetch("http://localhost:8000/analyze_upload", {
+        method: "POST",
+        body: formData,
+      });
+      
+      const data = await response.json();
+      
+      if (data.status === "found") {
+        // Clear existing threats and show new violations
+        setThreats([]);
+        data.violations.forEach((violation, index) => {
+          setTimeout(() => {
+            const newThreat = {
+              id: Date.now() + index,
+              type: violation.color,
+              title: `${violation.type} | ${violation.city}`,
+              location: violation.location,
+              time: violation.time,
+              severity: violation.severity,
+              platform: violation.platform,
+              originalImage: `http://localhost:8000${violation.original_image}`,
+              foundImage: `http://localhost:8000${violation.found_image}`
+            };
+            setThreats(prev => [...prev, newThreat]);
+          }, index * 500); // Stagger appearance
+        });
+        
+        alert(`Analysis Complete!\n\nFound ${data.total_violations} unauthorized copies across the internet.`);
+      } else {
+        alert(`Analysis Complete\n\n${data.message}\n\nScanned: ${data.scanned_platforms.join(", ")}\nTime: ${data.scan_time}`);
+      }
+    } catch (err) {
+      alert("Failed to analyze image. Ensure backend is running!");
+    } finally {
+      setIsScanning(false);
+    }
+  };
+  
+  const analyzeSample = async (sampleId) => {
+    setIsScanning(true);
+    setThreats([]);
+    
+    const formData = new FormData();
+    formData.append("sample_id", sampleId);
+    
+    try {
+      const response = await fetch("http://localhost:8000/analyze_sample", {
+        method: "POST",
+        body: formData,
+      });
+      
+      const data = await response.json();
+      
+      if (data.status === "found") {
+        // Show violations on map with staggered animation
+        data.violations.forEach((violation, index) => {
+          setTimeout(() => {
+            const newThreat = {
+              id: Date.now() + index,
+              type: violation.color,
+              title: `${violation.type} | ${violation.city}`,
+              location: violation.location,
+              time: violation.time,
+              severity: violation.severity,
+              platform: violation.platform,
+              originalImage: `http://localhost:8000${violation.original_image}`,
+              foundImage: `http://localhost:8000${violation.found_image}`
+            };
+            setThreats(prev => [...prev, newThreat]);
+          }, index * 500);
+        });
+        
+        // Switch to dashboard to show results
+        setTimeout(() => {
+          setActiveTab('dashboard');
+          alert(`Analysis Complete!\n\nFound ${data.total_violations} unauthorized copies across the internet.`);
+        }, 100);
+      }
+    } catch (err) {
+      alert("Failed to analyze sample. Ensure backend is running!");
+    } finally {
+      setIsScanning(false);
+    }
+  };
+  
+  const analyzeSampleVideo = async (sampleId) => {
+    setIsScanning(true);
+    setThreats([]);
+    const formData = new FormData();
+    formData.append("sample_id", sampleId);
+    try {
+      const response = await fetch("http://localhost:8000/analyze_sample_video", {method: "POST", body: formData});
+      const data = await response.json();
+      if (data.status === "found") {
+        data.violations.forEach((violation, index) => {
+          setTimeout(() => {
+            setThreats(prev => [...prev, {id: Date.now() + index, type: violation.color, title: `${violation.type} | ${violation.city}`, location: violation.location, time: violation.time, severity: violation.severity, platform: violation.platform, originalVideo: `http://localhost:8000${violation.original_video}`, foundVideo: `http://localhost:8000${violation.found_video}`, isVideo: true}]);
+          }, index * 500);
+        });
+        setTimeout(() => {setActiveTab('dashboard'); alert(`Found ${data.total_violations} unauthorized copies!`);}, 100);
+      }
+    } catch (err) {alert("Failed to analyze sample.");} finally {setIsScanning(false);}
   };
 
   const displayedThreats = selectedThreatIds ? threats.filter(t => selectedThreatIds.includes(t.id)) : threats;
@@ -183,12 +332,33 @@ function App() {
             {/* Top Stats */}
             <div className="stats-container" style={{ position: 'relative' }}>
               
-              <button 
-                onClick={() => isAutoScraping ? setIsAutoScraping(false) : setIsAutoScraping(true)}
-                style={{ position: 'absolute', right: 0, top: '-55px', background: isAutoScraping ? 'var(--danger)' : 'var(--warning)', color: isAutoScraping ? 'white' : '#000', border: 'none', padding: '10px 20px', borderRadius: '8px', fontWeight: 700, cursor: 'pointer', display: 'flex', gap: '8px', alignItems: 'center', transition: 'all 0.3s' }}
-              >
-                <Zap size={18} /> {isAutoScraping ? "Pause Live Scrape" : "Start Live Scrape"}
-              </button>
+              <div style={{ position: 'absolute', right: 0, top: '-55px', display: 'flex', gap: '10px', alignItems: 'center' }}>
+                {/* Media Type Selector */}
+                <select 
+                  value={mediaType}
+                  onChange={(e) => setMediaType(e.target.value)}
+                  style={{
+                    background: 'var(--bg-panel)',
+                    border: '1px solid var(--border)',
+                    color: 'var(--text-main)',
+                    padding: '10px 15px',
+                    borderRadius: '8px',
+                    fontWeight: 600,
+                    cursor: 'pointer'
+                  }}
+                >
+                  <option value="image">📷 Images</option>
+                  <option value="video">🎥 Videos</option>
+                </select>
+                
+                {/* Start/Pause Scraping Button */}
+                <button
+                  onClick={() => isAutoScraping ? setIsAutoScraping(false) : setIsAutoScraping(true)}
+                  style={{ background: isAutoScraping ? 'var(--danger)' : 'var(--warning)', color: isAutoScraping ? 'white' : '#000', border: 'none', padding: '10px 20px', borderRadius: '8px', fontWeight: 700, cursor: 'pointer', display: 'flex', gap: '8px', alignItems: 'center', transition: 'all 0.3s' }}
+                >
+                  <Zap size={18} /> {isAutoScraping ? "Pause Live Scrape" : "Start Live Scrape"}
+                </button>
+              </div>
               
               <div className="glass-panel stat-card">
                 <div className="stat-icon blue">
@@ -270,7 +440,8 @@ function App() {
                         threatId={threat.id}
                         eventHandlers={{
                           click: (e) => {
-                            setSelectedThreatIds([threat.id]);
+                            setSelectedViolation(threat);
+                            setShowComparisonModal(true);
                             e.originalEvent.stopPropagation();
                           }
                         }}
@@ -278,7 +449,16 @@ function App() {
                         <Popup className="dark-popup">
                           <strong>{threat.title}</strong><br/>
                           Severity: {threat.severity}<br/>
-                          Platform: {threat.platform}
+                          Platform: {threat.platform}<br/>
+                          <button 
+                            onClick={() => {
+                              setSelectedViolation(threat);
+                              setShowComparisonModal(true);
+                            }}
+                            style={{marginTop: '8px', padding: '4px 8px', cursor: 'pointer'}}
+                          >
+                            View Comparison
+                          </button>
                         </Popup>
                       </Marker>
                     ))}
@@ -314,7 +494,9 @@ function App() {
                       </div>
                       <div className="threat-meta">
                         <span className={`threat-type ${threat.type}`}>
-                          {threat.type === 'deepfake' ? 'Type 3 (AI)' : 'Type 1'}
+                          {threat.type === 'deepfake' ? 'AI Manipulated' : 
+                           threat.type === 'watermark' ? 'Watermarked' : 
+                           threat.type === 'repost' ? 'Reupload' : 'Modified'}
                         </span>
                         <span>•</span>
                         <span>{threat.platform}</span>
@@ -327,7 +509,113 @@ function App() {
           </div>
         ) : (
           /* Registration View */
-          <div className="glass-panel" style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+          <div className="glass-panel" style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '40px' }}>
+            
+            {/* Sample Images Gallery */}
+            {mediaType === 'image' && sampleImages.length > 0 && (
+              <div style={{ marginBottom: '40px', width: '100%', maxWidth: '900px' }}>
+                <h3 style={{ marginBottom: '20px', textAlign: 'center' }}>Try Sample Images</h3>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px' }}>
+                  {sampleImages.map(sample => (
+                    <div 
+                      key={sample.id}
+                      style={{
+                        background: 'var(--bg-panel)',
+                        borderRadius: '12px',
+                        padding: '16px',
+                        border: '2px solid var(--border)',
+                        cursor: 'pointer',
+                        transition: 'all 0.3s',
+                      }}
+                      onMouseEnter={(e) => e.currentTarget.style.borderColor = 'var(--primary)'}
+                      onMouseLeave={(e) => e.currentTarget.style.borderColor = 'var(--border)'}
+                    >
+                      <img 
+                        src={`http://localhost:8000${sample.path}`}
+                        alt={sample.name}
+                        style={{ width: '100%', borderRadius: '8px', marginBottom: '12px' }}
+                      />
+                      <h4 style={{ marginBottom: '8px', fontSize: '1rem' }}>{sample.name}</h4>
+                      <button
+                        onClick={() => analyzeSample(sample.id)}
+                        disabled={isScanning}
+                        style={{
+                          width: '100%',
+                          padding: '10px',
+                          background: 'var(--primary)',
+                          color: 'white',
+                          border: 'none',
+                          borderRadius: '8px',
+                          fontWeight: 600,
+                          cursor: isScanning ? 'not-allowed' : 'pointer',
+                          opacity: isScanning ? 0.5 : 1
+                        }}
+                      >
+                        {isScanning ? 'Analyzing...' : 'Analyze This Image'}
+                      </button>
+                    </div>
+                  ))}
+                </div>
+                
+                <div style={{ textAlign: 'center', margin: '30px 0', color: 'var(--text-muted)' }}>
+                  <span>OR</span>
+                </div>
+              </div>
+            )}
+            
+            {/* Sample Videos Gallery */}
+            {mediaType === 'video' && sampleVideos.length > 0 && (
+              <div style={{ marginBottom: '40px', width: '100%', maxWidth: '900px' }}>
+                <h3 style={{ marginBottom: '20px', textAlign: 'center' }}>Try Sample Videos</h3>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px' }}>
+                  {sampleVideos.map(sample => (
+                    <div key={sample.id} style={{ background: 'var(--bg-panel)', borderRadius: '12px', padding: '16px', border: '2px solid var(--border)' }}>
+                      <video src={`http://localhost:8000${sample.path}`} style={{ width: '100%', borderRadius: '8px', marginBottom: '12px' }} muted />
+                      <h4 style={{ marginBottom: '8px', fontSize: '1rem' }}>{sample.name}</h4>
+                      <button onClick={() => analyzeSampleVideo(sample.id)} disabled={isScanning} style={{ width: '100%', padding: '10px', background: 'var(--primary)', color: 'white', border: 'none', borderRadius: '8px', fontWeight: 600, cursor: isScanning ? 'not-allowed' : 'pointer', opacity: isScanning ? 0.5 : 1 }}>
+                        {isScanning ? 'Analyzing...' : 'Analyze This Video'}
+                      </button>
+                    </div>
+                  ))}
+                </div>
+                <div style={{ textAlign: 'center', margin: '30px 0', color: 'var(--text-muted)' }}><span>OR</span></div>
+              </div>
+            )}
+            
+            {/* Media Type Toggle */}
+            <div style={{ marginBottom: '20px', display: 'flex', gap: '10px' }}>
+              <button 
+                onClick={() => setMediaType('image')}
+                style={{
+                  padding: '10px 20px',
+                  borderRadius: '8px',
+                  border: 'none',
+                  background: mediaType === 'image' ? 'var(--primary)' : 'var(--bg-panel)',
+                  color: mediaType === 'image' ? 'white' : 'var(--text-main)',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  transition: 'all 0.3s'
+                }}
+              >
+                📷 Images
+              </button>
+              <button 
+                onClick={() => setMediaType('video')}
+                style={{
+                  padding: '10px 20px',
+                  borderRadius: '8px',
+                  border: 'none',
+                  background: mediaType === 'video' ? 'var(--primary)' : 'var(--bg-panel)',
+                  color: mediaType === 'video' ? 'white' : 'var(--text-main)',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  transition: 'all 0.3s'
+                }}
+              >
+                🎥 Videos
+              </button>
+            </div>
+            
             <div 
               className={`upload-zone ${dragActive ? 'active' : ''}`}
               onDragEnter={handleDrag}
@@ -336,15 +624,17 @@ function App() {
               onDrop={handleDrop}
             >
               <UploadCloud size={64} className="upload-icon" />
-              <h2 className="upload-title">Register Media Asset</h2>
-              <p className="upload-subtitle">Drag and drop your official images/videos here to index them via FAISS and CLIP.</p>
+              <h2 className="upload-title">Register {mediaType === 'video' ? 'Video' : 'Image'} Asset</h2>
+              <p className="upload-subtitle">
+                Drag and drop your official {mediaType === 'video' ? 'videos' : 'images'} here to index them via FAISS {mediaType === 'video' ? '(keyframe-based)' : 'and CLIP'}.
+              </p>
               
               <input 
                 type="file" 
                 id="file-upload" 
                 style={{display: 'none'}} 
                 onChange={handleFileChange}
-                accept="image/jpeg, image/png, image/webp"
+                accept={mediaType === 'video' ? 'video/mp4,video/avi,video/mov,video/mkv' : 'image/jpeg,image/png,image/webp'}
                 multiple
               />
               <label htmlFor="file-upload" className="upload-btn" style={{display: 'inline-block'}}>
@@ -356,10 +646,10 @@ function App() {
             
             <div style={{marginTop: '40px', display: 'flex', gap: '32px', color: 'var(--text-muted)'}}>
               <div style={{display: 'flex', alignItems: 'center', gap: '8px'}}>
-                <CheckCircle size={18} color="var(--success)"/> Creates Perceptual Hash
+                <CheckCircle size={18} color="var(--success)"/> {mediaType === 'video' ? 'Extracts Keyframes' : 'Creates Perceptual Hash'}
               </div>
               <div style={{display: 'flex', alignItems: 'center', gap: '8px'}}>
-                <CheckCircle size={18} color="var(--success)"/> Extracts Semantic Embedding
+                <CheckCircle size={18} color="var(--success)"/> {mediaType === 'video' ? 'Averages Frame Hashes' : 'Extracts Semantic Embedding'}
               </div>
               <div style={{display: 'flex', alignItems: 'center', gap: '8px'}}>
                 <CheckCircle size={18} color="var(--success)"/> Mints Provenance Record
@@ -368,6 +658,81 @@ function App() {
           </div>
         )}
       </div>
+      
+      {/* Image Comparison Modal */}
+      {showComparisonModal && selectedViolation && (
+        <div 
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: 'rgba(0, 0, 0, 0.8)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 9999,
+            padding: '20px'
+          }}
+          onClick={() => setShowComparisonModal(false)}
+        >
+          <div 
+            style={{
+              background: 'var(--bg-main)',
+              borderRadius: '16px',
+              padding: '30px',
+              maxWidth: '1200px',
+              width: '100%',
+              maxHeight: '90vh',
+              overflow: 'auto'
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+              <h2>{selectedViolation.title}</h2>
+              <button 
+                onClick={() => setShowComparisonModal(false)}
+                style={{
+                  background: 'var(--danger)',
+                  color: 'white',
+                  border: 'none',
+                  padding: '8px 16px',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  fontWeight: 600
+                }}
+              >
+                Close
+              </button>
+            </div>
+            
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '30px' }}>
+              <div>
+                <h3 style={{ marginBottom: '12px', color: 'var(--success)' }}>Original {selectedViolation.isVideo ? 'Video' : 'Image'}</h3>
+                {selectedViolation.isVideo ? <video src={selectedViolation.originalVideo} controls style={{ width: '100%', borderRadius: '12px', border: '2px solid var(--success)' }} /> : <img src={selectedViolation.originalImage} alt="Original" style={{ width: '100%', borderRadius: '12px', border: '2px solid var(--success)' }} />}
+                <p style={{ marginTop: '12px', color: 'var(--text-muted)' }}>Your protected asset</p>
+              </div>
+              
+              <div>
+                <h3 style={{ marginBottom: '12px', color: 'var(--danger)' }}>Found on Internet</h3>
+                {selectedViolation.isVideo ? <video src={selectedViolation.foundVideo} controls style={{ width: '100%', borderRadius: '12px', border: '2px solid var(--danger)' }} /> : <img src={selectedViolation.foundImage} alt="Found" style={{ width: '100%', borderRadius: '12px', border: '2px solid var(--danger)' }} />}
+                <div style={{ marginTop: '12px' }}>
+                  <p><strong>Platform:</strong> {selectedViolation.platform}</p>
+                  <p><strong>Type:</strong> {selectedViolation.title.split('|')[0].trim()}</p>
+                  <p><strong>Detected:</strong> {selectedViolation.time}</p>
+                  <p><strong>Severity:</strong> <span style={{ 
+                    color: selectedViolation.severity === 'high' ? 'var(--danger)' : 
+                           selectedViolation.severity === 'medium' ? 'var(--warning)' : 'var(--success)',
+                    fontWeight: 600,
+                    textTransform: 'uppercase'
+                  }}>{selectedViolation.severity}</span></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
