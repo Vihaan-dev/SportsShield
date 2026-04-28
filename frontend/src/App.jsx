@@ -8,6 +8,8 @@ import {
   ArrowUpRight,
   Bot,
   CheckCircle,
+  ChevronLeft,
+  ChevronRight,
   FileSearch,
   Filter,
   Globe,
@@ -19,6 +21,7 @@ import {
   Shield,
   ShieldAlert,
   Sparkles,
+  TrendingUp,
   UploadCloud,
   Zap,
 } from 'lucide-react';
@@ -161,6 +164,7 @@ const createClusterIcon = (cluster) => {
 
 function App() {
   const [activeTab, setActiveTab] = useState('overview');
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [isAutoScraping, setIsAutoScraping] = useState(false);
   const [alerts, setAlerts] = useState(MOCK_ALERTS);
   const [selectedFilter, setSelectedFilter] = useState('all');
@@ -313,7 +317,7 @@ function App() {
     formData.append('file', file);
 
     try {
-      const response = await fetch(`${API_BASE}/detect`, {
+      const response = await fetch(`${API_BASE}/inspect`, {
         method: 'POST',
         body: formData,
       });
@@ -321,18 +325,24 @@ function App() {
       const data = await response.json();
       setLatestScan({ ...data, fileName: file.name, previewUrl: scanPreviewUrl });
 
+      if (data.registered?.asset_id) {
+        setRegisteredAssets((prev) => prev + 1);
+      }
+
       if (response.ok && data.verdict === 'suspicious') {
         const createdAlert = addAlert(data, 'Manual inspection', file.name);
         setNotice({
           tone: 'success',
-          title: 'Type 3 explanation ready' + (createdAlert.kind === 'type3' ? '' : ''),
-          message: data.gemini_explanation?.explanation || 'Local pipeline flagged the image.',
+          title: 'Inspected & auto-registered',
+          message: data.gemini_explanation?.explanation || 'Local pipeline flagged the image. Asset added to registry.',
         });
       } else if (response.ok) {
         setNotice({
           tone: 'success',
-          title: data.title || 'Scan complete',
-          message: data.message || 'The asset looked clean or was too ambiguous to escalate.',
+          title: data.title || 'Inspected & auto-registered',
+          message: data.registered?.asset_id
+            ? `Clean scan. Registered as ${data.registered.asset_id}.`
+            : (data.message || 'The asset looked clean or was too ambiguous to escalate.'),
         });
       } else {
         setNotice({ tone: 'danger', title: 'Scan failed', message: data.detail || 'Detection request failed.' });
@@ -413,39 +423,34 @@ function App() {
   const maxScore = scoreEntries.length ? Math.max(...scoreEntries.map(([, value]) => Number(value) || 0)) : 0;
 
   return (
-    <div className="app-shell">
-      <aside className="sidebar">
-        <div className="brand-block">
+    <div className={`app-shell ${sidebarCollapsed ? 'sidebar-collapsed' : ''}`}>
+      <aside className={`sidebar ${sidebarCollapsed ? 'collapsed' : ''}`}>
+        <button
+          type="button"
+          className="brand-block"
+          onClick={() => setSidebarCollapsed((p) => !p)}
+          aria-label={sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+        >
           <div className="brand-mark">
-            <Shield color="#ffffff" size={24} />
+            <Shield color="#ffffff" size={22} />
           </div>
-          <div>
-            <div className="brand-name">Sentinel.io</div>
-            <div className="brand-subtitle">Media integrity command center</div>
-          </div>
-        </div>
+          {!sidebarCollapsed && (
+            <div>
+              <div className="brand-name">Sentinel.io</div>
+              <div className="brand-subtitle">Media integrity</div>
+            </div>
+          )}
+        </button>
 
         <nav className="nav-stack">
-          <button className={`nav-item ${activeTab === 'overview' ? 'active' : ''}`} onClick={() => setActiveTab('overview')} type="button">
+          <button className={`nav-item ${activeTab === 'overview' ? 'active' : ''}`} onClick={() => setActiveTab('overview')} type="button" title="Threat Radar">
             <Activity size={18} />
-            <span>Threat Radar</span>
+            {!sidebarCollapsed && <span>Threat Radar</span>}
           </button>
-          <button className={`nav-item ${activeTab === 'inspect' ? 'active' : ''}`} onClick={() => setActiveTab('inspect')} type="button">
+          <button className={`nav-item ${activeTab === 'inspect' ? 'active' : ''}`} onClick={() => setActiveTab('inspect')} type="button" title="Inspect & Register">
             <FileSearch size={18} />
-            <span>Inspect Media</span>
+            {!sidebarCollapsed && <span>Inspect & Register</span>}
           </button>
-          <button className={`nav-item ${activeTab === 'register' ? 'active' : ''}`} onClick={() => setActiveTab('register')} type="button">
-            <UploadCloud size={18} />
-            <span>Register Asset</span>
-          </button>
-          <div className="nav-divider" />
-          <div className="nav-status-card">
-            <div className="nav-status-row">
-              <CheckCircle size={16} />
-              <span>Pipeline online</span>
-            </div>
-            <p>pHash, OCR, and deepfake scoring are local. Gemini only explains Type 3 cases.</p>
-          </div>
         </nav>
       </aside>
 
@@ -453,13 +458,11 @@ function App() {
         <header className="topbar">
           <div>
             <div className="eyebrow">Digital asset intelligence</div>
-            <h1>{activeTab === 'overview' ? 'Global Threat Radar' : activeTab === 'inspect' ? 'AI Explainability Console' : 'Official Asset Registry'}</h1>
+            <h1>{activeTab === 'overview' ? 'Global Threat Radar' : 'Inspect & Register'}</h1>
             <p>
               {activeTab === 'overview'
                 ? 'Track suspicious media across the map, inspect the local scores, and open a Gemini explanation only when the result is Type 3.'
-                : activeTab === 'inspect'
-                  ? 'Drop a suspect image and review the full pipeline, including the Type 3-only explanation layer.'
-                  : 'Index official assets and keep the registration flow clean and traceable.'}
+                : 'Drop an image to run the full pipeline. The asset is auto-registered to the official index after inspection.'}
             </p>
           </div>
 
@@ -468,9 +471,9 @@ function App() {
               {isAutoScraping ? <PauseCircle size={16} /> : <PlayCircle size={16} />}
               {isAutoScraping ? 'Pause live scrape' : 'Start live scrape'}
             </button>
-            <div className="status-chip">
-              <ShieldAlert size={16} />
-              {visibleAlerts.length} visible alerts
+            <div className="alert-counter">
+              <ShieldAlert size={15} />
+              <span><strong>{visibleAlerts.length}</strong> visible alerts</span>
             </div>
           </div>
         </header>
@@ -507,10 +510,10 @@ function App() {
                 </div>
               </article>
               <article className="metric-card">
-                <div className="metric-icon amber"><Zap size={22} /></div>
+                <div className="metric-icon amber"><TrendingUp size={22} /></div>
                 <div>
-                  <div className="metric-label">Pipeline note</div>
-                  <div className="metric-value">CLIP off</div>
+                  <div className="metric-label">Type 3 share</div>
+                  <div className="metric-value">{alerts.length ? `${Math.round((alerts.filter((a) => a.kind === 'type3').length / alerts.length) * 100)}%` : '0%'}</div>
                 </div>
               </article>
             </div>
@@ -530,7 +533,7 @@ function App() {
                 <div className="map-frame">
                   <MapContainer center={[20, 0]} zoom={2} scrollWheelZoom={false} className="leaflet-map">
                     <TileLayer
-                      url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+                      url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png"
                       attribution='&copy; <a href="https://carto.com/">CARTO</a>'
                     />
                     <MarkerClusterGroup
@@ -563,54 +566,65 @@ function App() {
               </section>
 
               <section className="panel detail-panel">
-                <div className="panel-head">
-                  <div>
-                    <div className="panel-kicker">Selected alert</div>
-                    <h2>{selectedAlert?.title || 'No alert selected'}</h2>
-                  </div>
-                  <div className={`severity-badge ${selectedAlert?.severity || 'low'}`}>{selectedAlert ? selectedAlert.severity : 'idle'}</div>
-                </div>
-
                 {selectedAlert ? (
                   <>
-                    <div className="detail-summary">
-                      <div>
-                        <div className="detail-label">Type</div>
-                        <div className="detail-value">{labelForKind(selectedAlert.kind)}</div>
+                    <div className="alert-hero">
+                      <div className={`alert-hero-icon ${selectedAlert.kind}`}>
+                        {selectedAlert.kind === 'type3' ? 'AI' : selectedAlert.kind === 'type2' ? 'TXT' : 'CP'}
                       </div>
-                      <div>
-                        <div className="detail-label">Platform</div>
-                        <div className="detail-value">{selectedAlert.platform}</div>
+                      <div className="alert-hero-body">
+                        <div className="panel-kicker">Selected alert</div>
+                        <h2>{selectedAlert.title}</h2>
+                        <div className="alert-hero-meta">
+                          <span>{labelForKind(selectedAlert.kind)}</span>
+                          <span className="dot">·</span>
+                          <span>{selectedAlert.platform}</span>
+                          <span className="dot">·</span>
+                          <span>{selectedAlert.time}</span>
+                        </div>
                       </div>
-                      <div>
-                        <div className="detail-label">Source</div>
-                        <div className="detail-value">{selectedAlert.source}</div>
+                      <div className={`severity-badge ${selectedAlert.severity}`}>{selectedAlert.severity}</div>
+                    </div>
+
+                    <div className="kv-row">
+                      <div className="kv-cell">
+                        <span className="kv-label">Source</span>
+                        <span className="kv-value">{selectedAlert.source}</span>
+                      </div>
+                      <div className="kv-cell">
+                        <span className="kv-label">File</span>
+                        <span className="kv-value mono">{selectedAlert.fileName}</span>
                       </div>
                     </div>
 
-                    <div className="pipeline-strip">
-                      <span className={`pipeline-chip on`}>pHash</span>
-                      <span className={`pipeline-chip on`}>OCR</span>
-                      <span className={`pipeline-chip on`}>Deepfake</span>
-                      <span className={`pipeline-chip ${selectedAlert.explanation?.enabled ? 'on' : 'off'}`}>Gemini</span>
-                      <span className="pipeline-chip off">CLIP skipped</span>
-                    </div>
-
-                    <div className="score-list">
-                      {Object.entries(selectedAlert.scores || {}).map(([label, value]) => {
-                        const width = maxScore ? Math.max((Number(value) / maxScore) * 100, 8) : 0;
-                        return (
-                          <div className="score-row" key={label}>
-                            <div className="score-row-head">
-                              <span>{label}</span>
-                              <span>{formatScore(value)}</span>
-                            </div>
-                            <div className="score-track">
-                              <div className="score-fill" style={{ width: `${width}%` }} />
-                            </div>
-                          </div>
-                        );
-                      })}
+                    <div className="section-block">
+                      <div className="section-label">Detector confidence</div>
+                      <div className="score-list">
+                        {(() => {
+                          const entries = Object.entries(selectedAlert.scores || {});
+                          const total = entries.reduce((s, [, v]) => s + (Number(v) || 0), 0) || 1;
+                          const winnerVal = Math.max(...entries.map(([, v]) => Number(v) || 0));
+                          return entries.map(([label, value]) => {
+                            const num = Number(value) || 0;
+                            const pct = (num / total) * 100;
+                            const isWinner = num === winnerVal && num > 0;
+                            const short = label.split(' - ')[0];
+                            const desc = label.split(' - ')[1] || '';
+                            return (
+                              <div className={`score-row ${isWinner ? 'winner' : ''}`} key={label}>
+                                <div className="score-row-head">
+                                  <span className="score-tag">{short}</span>
+                                  <span className="score-desc">{desc}</span>
+                                  <span className="score-num">{pct.toFixed(0)}%</span>
+                                </div>
+                                <div className="score-track">
+                                  <div className="score-fill" style={{ width: `${Math.max(pct, 4)}%` }} />
+                                </div>
+                              </div>
+                            );
+                          });
+                        })()}
+                      </div>
                     </div>
 
                     {selectedAlert.explanation?.enabled ? (
@@ -632,20 +646,18 @@ function App() {
                         </p>
                       </div>
                     )}
-
-                    <div className="detail-footer">
-                      <div className="tiny-stat">
-                        <span>Seen</span>
-                        <strong>{selectedAlert.time}</strong>
-                      </div>
-                      <div className="tiny-stat">
-                        <span>File</span>
-                        <strong>{selectedAlert.fileName}</strong>
-                      </div>
-                    </div>
                   </>
                 ) : (
-                  <div className="empty-state">Select an alert from the feed or run a live scrape to populate the panel.</div>
+                  <>
+                    <div className="panel-head">
+                      <div>
+                        <div className="panel-kicker">Selected alert</div>
+                        <h2>No alert selected</h2>
+                      </div>
+                      <div className="severity-badge low">idle</div>
+                    </div>
+                    <div className="empty-state">Select an alert from the feed or run a live scrape to populate the panel.</div>
+                  </>
                 )}
               </section>
             </div>
@@ -708,8 +720,8 @@ function App() {
                   <UploadCloud size={48} />
                 </div>
                 <div>
-                  <h2>Drop a suspect image</h2>
-                  <p>Run the local pipeline first. Gemini only opens when the backend thinks it is Type 3.</p>
+                  <h2>Drop an image</h2>
+                  <p>Runs the full detection pipeline, then auto-registers the asset to the official index.</p>
                 </div>
               </div>
 
@@ -728,24 +740,6 @@ function App() {
                 </div>
               )}
 
-              <div className="helper-row">
-                <div className="helper-pill">
-                  <CheckCircle size={15} />
-                  pHash matching
-                </div>
-                <div className="helper-pill">
-                  <CheckCircle size={15} />
-                  OCR overlay scoring
-                </div>
-                <div className="helper-pill">
-                  <CheckCircle size={15} />
-                  AI/deepfake signals
-                </div>
-                <div className="helper-pill muted">
-                  <Sparkles size={15} />
-                  Gemini only for Type 3
-                </div>
-              </div>
             </div>
 
             <div className="panel result-panel">
@@ -840,116 +834,6 @@ function App() {
           </section>
         )}
 
-        {activeTab === 'register' && (
-          <section className="register-grid">
-            <div className={`panel upload-panel ${dragActive ? 'drag-active' : ''}`} onDragEnter={(event) => { event.preventDefault(); setDragActive(true); }} onDragOver={(event) => { event.preventDefault(); setDragActive(true); }} onDragLeave={(event) => { event.preventDefault(); setDragActive(false); }} onDrop={(event) => handleDrop(event, 'register')}>
-              <div className="upload-hero">
-                <div className="upload-icon-wrap">
-                  <ImageIcon size={48} />
-                </div>
-                <div>
-                  <h2>Register official media</h2>
-                  <p>Store provenance for clean assets. CLIP remains a backend helper and is not part of detection right now.</p>
-                </div>
-              </div>
-
-              <label className="upload-button" htmlFor="register-input">
-                {isRegistering ? 'Registering...' : 'Browse official media'}
-              </label>
-              <input id="register-input" type="file" accept="image/png,image/jpeg,image/webp" className="hidden-input" onChange={(event) => handleFileInput(event, 'register')} />
-
-              {registerPreviewUrl && (
-                <div className="preview-card">
-                  <img src={registerPreviewUrl} alt="Registered preview" className="preview-image" />
-                  <div className="preview-meta">
-                    <span>{registerFile?.name}</span>
-                    <span>Ready for registration</span>
-                  </div>
-                </div>
-              )}
-
-              <div className="helper-row">
-                <div className="helper-pill">
-                  <CheckCircle size={15} />
-                  Perceptual hash
-                </div>
-                <div className="helper-pill">
-                  <CheckCircle size={15} />
-                  Provenance signature
-                </div>
-                <div className="helper-pill">
-                  <CheckCircle size={15} />
-                  FAISS index
-                </div>
-                <div className="helper-pill muted">
-                  <Layers size={15} />
-                  CLIP helper path only
-                </div>
-              </div>
-            </div>
-
-            <div className="panel result-panel">
-              <div className="panel-head">
-                <div>
-                  <div className="panel-kicker">Registry status</div>
-                  <h2>{registeredAssets.toString().padStart(2, '0')} assets indexed</h2>
-                </div>
-                <div className="status-chip success">
-                  <Shield size={16} />
-                  Ready
-                </div>
-              </div>
-
-              <div className="detail-summary stacked">
-                <div>
-                  <div className="detail-label">Local hash path</div>
-                  <div className="detail-value">FAISS / pHash</div>
-                </div>
-                <div>
-                  <div className="detail-label">Semantic helper</div>
-                  <div className="detail-value">CLIP stored separately, not used in detection</div>
-                </div>
-                <div>
-                  <div className="detail-label">Next step</div>
-                  <div className="detail-value">Use Inspect Media to test Type 3 explainability</div>
-                </div>
-              </div>
-
-              <div className="pipeline-grid">
-                <div className="pipeline-card on">
-                  <strong>Register</strong>
-                  <span>Writes original asset to the database</span>
-                </div>
-                <div className="pipeline-card on">
-                  <strong>Hash</strong>
-                  <span>Creates the structural lookup key</span>
-                </div>
-                <div className="pipeline-card on">
-                  <strong>Signature</strong>
-                  <span>Proof of provenance for the UI</span>
-                </div>
-                <div className="pipeline-card off">
-                  <strong>Gemini</strong>
-                  <span>Not used for clean assets</span>
-                </div>
-              </div>
-
-              <div className="raw-note">
-                <strong>CLIP note</strong>
-                <span>
-                  The helper exists in <code>backend/clip_logic.py</code>, but detection does not call it. The dashboard now makes that explicit.
-                </span>
-              </div>
-            </div>
-          </section>
-        )}
-
-        <footer className="bottom-strip">
-          <div className="mini-chip"><Activity size={14} /> Local scoring</div>
-          <div className="mini-chip"><Sparkles size={14} /> Gemini only for Type 3</div>
-          <div className="mini-chip"><MapIcon size={14} /> Interactive map view</div>
-          <div className="mini-chip"><Zap size={14} /> CLIP disabled in detect</div>
-        </footer>
       </main>
     </div>
   );
